@@ -20,7 +20,7 @@ public abstract class Boom {
         try {
             ApplicationType type = Gdx.app.getType();
             if(type == ApplicationType.Desktop) {
-                String className = "com.rafaskoberg.boom.lwjgl3.BoomLwjgl3";
+                String className = "com.rafaskoberg.boom.BoomLwjgl3";
                 Class<? extends Boom> clazz = ClassReflection.forName(className);
                 Object instance = clazz.newInstance();
                 boom = (Boom) instance;
