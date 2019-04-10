@@ -22,7 +22,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.rafaskb.gdx-boom:core:master-SNAPSHOT'
+    compile 'com.github.rafaskb.gdx-boom:core:master-SNAPSHOT'
 }
 ```
 
@@ -30,7 +30,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.rafaskb.gdx-boom:lwjgl3:master-SNAPSHOT'
+    compile 'com.github.rafaskb.gdx-boom:lwjgl3:master-SNAPSHOT'
 }
 ```
 
