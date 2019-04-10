@@ -1,0 +1,5 @@
+rootProject.name = 'gdx-boom'
+
+include 'lwjgl3'
+include 'core'
+
