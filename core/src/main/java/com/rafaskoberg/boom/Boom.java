@@ -2,6 +2,7 @@ package com.rafaskoberg.boom;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
@@ -63,4 +64,18 @@ public abstract class Boom {
 
     public abstract void play(Sound sound, BoomChannel channel, float volume, float pitch, float pan);
 
+    public final void play(Music music, int channelIndex) {
+        play(music, getChannel(channelIndex));
+    }
+
+    public void play(Music music, BoomChannel channel) {
+        music.play();
+        changeMusicChannel(music, channel);
+    }
+
+    public final void changeMusicChannel(Music music, int channelIndex) {
+        changeMusicChannel(music, getChannel(channelIndex));
+    }
+
+    public abstract void changeMusicChannel(Music music, BoomChannel channel);
 }

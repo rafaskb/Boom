@@ -1,8 +1,10 @@
 package com.rafaskoberg.boom;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALAudio;
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -50,8 +52,11 @@ public class BoomLwjgl3 extends Boom {
     }
 
     @Override
-    public void play(Sound sound, BoomChannel ch, float volume, float pitch, float pan) {
-        BoomChannelLwjgl3 channel = (BoomChannelLwjgl3) ch;
+    public void play(Sound sound, BoomChannel abstractChannel, float volume, float pitch, float pan) {
+        // Cast channel to its real class
+        BoomChannelLwjgl3 channel = (BoomChannelLwjgl3) abstractChannel;
+
+        // Play sound
         long soundId = sound.play(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
@@ -63,7 +68,24 @@ public class BoomLwjgl3 extends Boom {
         }
     }
 
-    static Integer getSourceId(long soundId) {
+    @Override
+    public void changeMusicChannel(Music abstractMusic, BoomChannel abstractChannel) {
+        // Cast channel and music to their real classes
+        BoomChannelLwjgl3 channel = (BoomChannelLwjgl3) abstractChannel;
+        OpenALMusic music = (OpenALMusic) abstractMusic;
+
+        // If music is playing and has a source ID, apply channel effect
+        if(music.isPlaying()) {
+            int sourceId = music.getSourceId();
+            if(sourceId != -1) {
+                int alAuxSlot = channel == null ? EXTEfx.AL_EFFECTSLOT_NULL : channel.getAlAuxSlot();
+                AL11.alSource3i(sourceId, EXTEfx.AL_AUXILIARY_SEND_FILTER, alAuxSlot, 0, EXTEfx.AL_FILTER_NULL);
+                BoomLwjgl3.checkAlError();
+            }
+        }
+    }
+
+    private static Integer getSourceId(long soundId) {
         try {
             LongMap<Integer> soundIdToSource = (LongMap<Integer>) f_soundIdToSource.get(Gdx.audio);
             return soundIdToSource.get(soundId);
