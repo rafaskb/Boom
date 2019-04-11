@@ -34,7 +34,7 @@ public abstract class BoomChannel {
     }
 
     public void setSourceCutoff(float sourceCutoff) {
-        this.sourceCutoff = sourceCutoff;
+        this.sourceCutoff = MathUtils.clamp(sourceCutoff, 0, 1);
     }
 
     public abstract BoomEffect addReverb(ReverbPreset preset);

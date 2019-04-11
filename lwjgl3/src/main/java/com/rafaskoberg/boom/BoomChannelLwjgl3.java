@@ -53,7 +53,7 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     @Override
     protected void apply(int sourceId) {
         alFilterf(alSourceFilter, AL_LOWPASS_GAIN, getSourceGain());
-        alFilterf(alSourceFilter, AL_LOWPASS_GAINHF, getSourceCutoff() * getSourceCutoff());
+        alFilterf(alSourceFilter, AL_LOWPASS_GAINHF, (float) Math.pow(getSourceCutoff(), 6));
         AL10.alSourcei(sourceId, AL_DIRECT_FILTER, alSourceFilter);
     }
 
