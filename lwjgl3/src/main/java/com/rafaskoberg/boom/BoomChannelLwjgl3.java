@@ -5,6 +5,7 @@ import com.rafaskoberg.boom.effect.BoomEffect;
 import com.rafaskoberg.boom.effect.ReverbEffectLwjgl3;
 import com.rafaskoberg.boom.effect.reverb.ReverbData;
 import com.rafaskoberg.boom.effect.reverb.ReverbPreset;
+import com.rafaskoberg.boom.util.EFXUtil;
 import org.lwjgl.openal.AL10;
 
 import static org.lwjgl.openal.EXTEfx.*;
@@ -45,7 +46,7 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         effects.add(reverb);
         reverb.apply(alAuxSlot);
         alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, reverb.alEffect);
-        BoomLwjgl3.checkAlError();
+        EFXUtil.checkAlError();
         return reverb;
     }
 
