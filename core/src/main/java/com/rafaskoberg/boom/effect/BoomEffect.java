@@ -2,6 +2,8 @@ package com.rafaskoberg.boom.effect;
 
 public abstract class BoomEffect {
 
-    protected abstract void apply(int alAuxSlot);
+    public abstract void apply(int alAuxSlot);
+
+    public abstract void remove(int alAuxSlot);
 
 }

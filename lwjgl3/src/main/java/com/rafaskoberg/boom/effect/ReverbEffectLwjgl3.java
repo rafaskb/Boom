@@ -42,4 +42,9 @@ public class ReverbEffectLwjgl3 extends BoomEffect {
         alEffecti(alEffect, AL_EAXREVERB_DECAY_HFLIMIT, data.decayHFLimit);
     }
 
+    @Override
+    public void remove(int alAuxSlot) {
+        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, AL_EFFECT_NULL);
+    }
+
 }

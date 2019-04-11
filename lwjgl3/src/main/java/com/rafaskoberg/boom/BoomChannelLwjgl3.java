@@ -51,6 +51,28 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     }
 
     @Override
+    public void removeEffect(BoomEffect effect) {
+        if(effects.removeValue(effect, true)) {
+            effect.remove(alAuxSlot);
+        }
+    }
+
+    @Override
+    public void removeEffect(int effectIndex) {
+        if(effectIndex >= 0 && effectIndex < effects.size) {
+            removeEffect(effects.get(effectIndex));
+        }
+    }
+
+    @Override
+    public void removeAllEffects() {
+        for(BoomEffect effect : effects) {
+            effect.remove(alAuxSlot);
+        }
+        effects.clear();
+    }
+
+    @Override
     protected void apply(int sourceId) {
         alFilterf(alSourceFilter, AL_LOWPASS_GAIN, getSourceGain());
         alFilterf(alSourceFilter, AL_LOWPASS_GAINHF, (float) Math.pow(getSourceCutoff(), 6));

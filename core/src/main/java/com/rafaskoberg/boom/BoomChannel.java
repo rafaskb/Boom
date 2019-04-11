@@ -41,6 +41,12 @@ public abstract class BoomChannel {
 
     public abstract BoomEffect addReverb(ReverbData data);
 
+    public abstract void removeEffect(BoomEffect effect);
+
+    public abstract void removeEffect(int effectIndex);
+
+    public abstract void removeAllEffects();
+
     protected abstract int getAlAuxSlot();
 
     protected abstract void apply(int sourceId);
