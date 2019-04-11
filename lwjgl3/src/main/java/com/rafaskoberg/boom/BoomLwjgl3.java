@@ -90,12 +90,13 @@ public class BoomLwjgl3 extends Boom {
     }
 
     @Override
-    public void play(Sound sound, BoomChannel channel, float volume, float pitch, float pan) {
+    public long play(Sound sound, BoomChannel channel, float volume, float pitch, float pan) {
         long soundId = sound.play(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
             postPlay(sourceId, (BoomChannelLwjgl3) channel);
         }
+        return soundId;
     }
 
     @Override

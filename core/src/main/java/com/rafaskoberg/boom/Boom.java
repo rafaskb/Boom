@@ -42,27 +42,27 @@ public abstract class Boom {
 
     public abstract BoomChannel getChannel(int id);
 
-    public final void play(Sound sound, int channelId) {
-        play(sound, getChannel(channelId), 1, 1, 0);
+    public final long play(Sound sound, int channelId) {
+        return play(sound, getChannel(channelId), 1, 1, 0);
     }
 
-    public final void play(Sound sound, int channelId, float volume) {
-        play(sound, getChannel(channelId), volume, 1, 0);
+    public final long play(Sound sound, int channelId, float volume) {
+        return play(sound, getChannel(channelId), volume, 1, 0);
     }
 
-    public final void play(Sound sound, int channelId, float volume, float pitch, float pan) {
-        play(sound, getChannel(channelId), volume, pitch, pan);
+    public final long play(Sound sound, int channelId, float volume, float pitch, float pan) {
+        return play(sound, getChannel(channelId), volume, pitch, pan);
     }
 
-    public final void play(Sound sound, BoomChannel channel) {
-        play(sound, channel, 1, 1, 0);
+    public final long play(Sound sound, BoomChannel channel) {
+        return play(sound, channel, 1, 1, 0);
     }
 
-    public final void play(Sound sound, BoomChannel channel, float volume) {
-        play(sound, channel, volume, 1, 0);
+    public final long play(Sound sound, BoomChannel channel, float volume) {
+        return play(sound, channel, volume, 1, 0);
     }
 
-    public abstract void play(Sound sound, BoomChannel channel, float volume, float pitch, float pan);
+    public abstract long play(Sound sound, BoomChannel channel, float volume, float pitch, float pan);
 
     public final void play(Music music, int channelId) {
         play(music, getChannel(channelId));
