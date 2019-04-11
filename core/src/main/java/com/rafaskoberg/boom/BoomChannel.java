@@ -6,7 +6,7 @@ import com.rafaskoberg.boom.effect.reverb.ReverbData;
 import com.rafaskoberg.boom.effect.reverb.ReverbPreset;
 
 public abstract class BoomChannel {
-    private       float gain = 1.0f;
+    private       float sourceGain = 1.0f;
     private final int   id;
 
     BoomChannel(int id) {
@@ -20,12 +20,12 @@ public abstract class BoomChannel {
         return id;
     }
 
-    public float getGain() {
-        return gain;
+    public float getSourceGain() {
+        return sourceGain;
     }
 
-    public void setGain(float gain) {
-        this.gain = MathUtils.clamp(gain, 0, 1);
+    public void setSourceGain(float sourceGain) {
+        this.sourceGain = MathUtils.clamp(sourceGain, 0, 1);
     }
 
     public abstract BoomEffect addReverb(ReverbPreset preset);

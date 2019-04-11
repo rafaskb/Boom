@@ -24,8 +24,8 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     }
 
     @Override
-    public void setGain(float gain) {
-        super.setGain(gain);
+    public void setSourceGain(float sourceGain) {
+        super.setSourceGain(sourceGain);
 
     }
 
@@ -51,7 +51,7 @@ public class BoomChannelLwjgl3 extends BoomChannel {
 
     @Override
     protected void apply(int sourceId) {
-        alFilterf(alDryFilter, AL_LOWPASS_GAIN, getGain());
+        alFilterf(alDryFilter, AL_LOWPASS_GAIN, getSourceGain());
         AL10.alSourcei(sourceId, AL_DIRECT_FILTER, alDryFilter);
     }
 
