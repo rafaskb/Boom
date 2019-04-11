@@ -13,15 +13,15 @@ import static org.lwjgl.openal.EXTEfx.*;
 public class BoomChannelLwjgl3 extends BoomChannel {
     private final Array<BoomEffect> effects;
 
-    private int alAuxSlot   = 0;
-    private int alDryFilter = 0;
+    private int alAuxSlot      = 0;
+    private int alSourceFilter = 0;
 
     BoomChannelLwjgl3(int id) {
         super(id);
         this.effects = new Array<>();
         this.alAuxSlot = alGenAuxiliaryEffectSlots();
-        this.alDryFilter = alGenFilters();
-        alFilteri(alDryFilter, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
+        this.alSourceFilter = alGenFilters();
+        alFilteri(alSourceFilter, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
     }
 
     @Override
@@ -52,8 +52,9 @@ public class BoomChannelLwjgl3 extends BoomChannel {
 
     @Override
     protected void apply(int sourceId) {
-        alFilterf(alDryFilter, AL_LOWPASS_GAIN, getSourceGain());
-        AL10.alSourcei(sourceId, AL_DIRECT_FILTER, alDryFilter);
+        alFilterf(alSourceFilter, AL_LOWPASS_GAIN, getSourceGain());
+        alFilterf(alSourceFilter, AL_LOWPASS_GAINHF, getSourceCutoff() * getSourceCutoff());
+        AL10.alSourcei(sourceId, AL_DIRECT_FILTER, alSourceFilter);
     }
 
 }

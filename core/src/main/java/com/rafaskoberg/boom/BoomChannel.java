@@ -6,8 +6,9 @@ import com.rafaskoberg.boom.effect.reverb.ReverbData;
 import com.rafaskoberg.boom.effect.reverb.ReverbPreset;
 
 public abstract class BoomChannel {
-    private       float sourceGain = 1.0f;
     private final int   id;
+    private       float sourceGain   = 1.0f;
+    private       float sourceCutoff = 1.0f;
 
     BoomChannel(int id) {
         this.id = id;
@@ -28,6 +29,14 @@ public abstract class BoomChannel {
         this.sourceGain = MathUtils.clamp(sourceGain, 0, 1);
     }
 
+    public float getSourceCutoff() {
+        return sourceCutoff;
+    }
+
+    public void setSourceCutoff(float sourceCutoff) {
+        this.sourceCutoff = sourceCutoff;
+    }
+
     public abstract BoomEffect addReverb(ReverbPreset preset);
 
     public abstract BoomEffect addReverb(ReverbData data);
@@ -35,5 +44,4 @@ public abstract class BoomChannel {
     protected abstract int getAlAuxSlot();
 
     protected abstract void apply(int sourceId);
-
 }
