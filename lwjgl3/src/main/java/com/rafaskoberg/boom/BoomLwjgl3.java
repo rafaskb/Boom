@@ -39,7 +39,7 @@ public class BoomLwjgl3 extends Boom {
         }
 
         // Create channel
-        BoomChannel channel = new BoomChannelLwjgl3();
+        BoomChannel channel = new BoomChannelLwjgl3(index);
         channelsByIndex.put(index, channel);
 
         // Return channel

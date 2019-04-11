@@ -13,7 +13,8 @@ public class BoomChannelLwjgl3 extends BoomChannel {
 
     private int alAuxSlot = 0;
 
-    public BoomChannelLwjgl3() {
+    BoomChannelLwjgl3(int index) {
+        super(index);
         this.effects = new Array<>();
 
         this.alAuxSlot = alGenAuxiliaryEffectSlots();
