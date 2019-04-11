@@ -68,10 +68,7 @@ public abstract class Boom {
         play(music, getChannel(channelIndex));
     }
 
-    public void play(Music music, BoomChannel channel) {
-        music.play();
-        changeMusicChannel(music, channel);
-    }
+    public abstract void play(Music music, BoomChannel channel);
 
     public final void changeMusicChannel(Music music, int channelIndex) {
         changeMusicChannel(music, getChannel(channelIndex));

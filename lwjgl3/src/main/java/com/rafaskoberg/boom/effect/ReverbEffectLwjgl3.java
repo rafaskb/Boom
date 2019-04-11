@@ -40,7 +40,6 @@ public class ReverbEffectLwjgl3 extends BoomEffect {
         alEffectf(alEffect, AL_EAXREVERB_LFREFERENCE, data.lfReference);
         alEffectf(alEffect, AL_EAXREVERB_ROOM_ROLLOFF_FACTOR, data.roomRolloffFactor);
         alEffecti(alEffect, AL_EAXREVERB_DECAY_HFLIMIT, data.decayHFLimit);
-
     }
 
 }
