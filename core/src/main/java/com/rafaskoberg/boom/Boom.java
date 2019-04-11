@@ -64,6 +64,28 @@ public abstract class Boom {
 
     public abstract long play(Sound sound, BoomChannel channel, float volume, float pitch, float pan);
 
+    public final long loop(Sound sound, int channelId) {
+        return loop(sound, getChannel(channelId), 1, 1, 0);
+    }
+
+    public final long loop(Sound sound, int channelId, float volume) {
+        return loop(sound, getChannel(channelId), volume, 1, 0);
+    }
+
+    public final long loop(Sound sound, int channelId, float volume, float pitch, float pan) {
+        return loop(sound, getChannel(channelId), volume, pitch, pan);
+    }
+
+    public final long loop(Sound sound, BoomChannel channel) {
+        return loop(sound, channel, 1, 1, 0);
+    }
+
+    public final long loop(Sound sound, BoomChannel channel, float volume) {
+        return loop(sound, channel, volume, 1, 0);
+    }
+
+    public abstract long loop(Sound sound, BoomChannel channel, float volume, float pitch, float pan);
+
     public final void play(Music music, int channelId) {
         play(music, getChannel(channelId));
     }
