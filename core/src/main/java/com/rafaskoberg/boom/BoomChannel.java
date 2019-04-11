@@ -7,17 +7,17 @@ import com.rafaskoberg.boom.effect.reverb.ReverbPreset;
 
 public abstract class BoomChannel {
     private       float gain = 1.0f;
-    private final int   index;
+    private final int   id;
 
-    BoomChannel(int index) {
-        this.index = index;
+    BoomChannel(int id) {
+        this.id = id;
     }
 
     /**
-     * Returns the index this channel was registered at.
+     * Returns the id this channel was registered at.
      */
-    public int getIndex() {
-        return index;
+    public int getId() {
+        return id;
     }
 
     public float getGain() {

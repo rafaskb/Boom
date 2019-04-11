@@ -38,20 +38,20 @@ public abstract class Boom {
         return boom;
     }
 
-    public abstract BoomChannel createChannel(int channelIndex);
+    public abstract BoomChannel createChannel(int channelId);
 
-    public abstract BoomChannel getChannel(int index);
+    public abstract BoomChannel getChannel(int id);
 
-    public final void play(Sound sound, int channelIndex) {
-        play(sound, getChannel(channelIndex), 1, 1, 0);
+    public final void play(Sound sound, int channelId) {
+        play(sound, getChannel(channelId), 1, 1, 0);
     }
 
-    public final void play(Sound sound, int channelIndex, float volume) {
-        play(sound, getChannel(channelIndex), volume, 1, 0);
+    public final void play(Sound sound, int channelId, float volume) {
+        play(sound, getChannel(channelId), volume, 1, 0);
     }
 
-    public final void play(Sound sound, int channelIndex, float volume, float pitch, float pan) {
-        play(sound, getChannel(channelIndex), volume, pitch, pan);
+    public final void play(Sound sound, int channelId, float volume, float pitch, float pan) {
+        play(sound, getChannel(channelId), volume, pitch, pan);
     }
 
     public final void play(Sound sound, BoomChannel channel) {
@@ -64,14 +64,14 @@ public abstract class Boom {
 
     public abstract void play(Sound sound, BoomChannel channel, float volume, float pitch, float pan);
 
-    public final void play(Music music, int channelIndex) {
-        play(music, getChannel(channelIndex));
+    public final void play(Music music, int channelId) {
+        play(music, getChannel(channelId));
     }
 
     public abstract void play(Music music, BoomChannel channel);
 
-    public final void changeMusicChannel(Music music, int channelIndex) {
-        changeMusicChannel(music, getChannel(channelIndex));
+    public final void changeMusicChannel(Music music, int channelId) {
+        changeMusicChannel(music, getChannel(channelId));
     }
 
     public abstract void changeMusicChannel(Music music, BoomChannel channel);

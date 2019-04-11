@@ -15,8 +15,8 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     private int alAuxSlot   = 0;
     private int alDryFilter = 0;
 
-    BoomChannelLwjgl3(int index) {
-        super(index);
+    BoomChannelLwjgl3(int id) {
+        super(id);
         this.effects = new Array<>();
         this.alAuxSlot = alGenAuxiliaryEffectSlots();
         this.alDryFilter = alGenFilters();

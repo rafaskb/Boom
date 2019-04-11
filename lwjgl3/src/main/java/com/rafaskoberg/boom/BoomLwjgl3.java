@@ -33,11 +33,11 @@ public class BoomLwjgl3 extends Boom {
         }
     }
 
-    private IntMap<BoomChannel> channelsByIndex;
+    private IntMap<BoomChannel> channelsById;
     private ObjectIntMap<Music> musicChannels;
 
     public BoomLwjgl3() {
-        channelsByIndex = new IntMap<>();
+        channelsById = new IntMap<>();
         musicChannels = new ObjectIntMap<>();
 
         // Register application listener
@@ -70,22 +70,22 @@ public class BoomLwjgl3 extends Boom {
     }
 
     @Override
-    public BoomChannel createChannel(int index) {
-        if(channelsByIndex.containsKey(index)) {
-            throw new IllegalStateException("Failed to create channel. There is already a channel registered to this index: " + index);
+    public BoomChannel createChannel(int id) {
+        if(channelsById.containsKey(id)) {
+            throw new IllegalStateException("Failed to create channel. There is already a channel registered to this id: " + id);
         }
 
         // Create channel
-        BoomChannel channel = new BoomChannelLwjgl3(index);
-        channelsByIndex.put(index, channel);
+        BoomChannel channel = new BoomChannelLwjgl3(id);
+        channelsById.put(id, channel);
 
         // Return channel
         return channel;
     }
 
     @Override
-    public BoomChannel getChannel(int index) {
-        return channelsByIndex.get(index, null);
+    public BoomChannel getChannel(int id) {
+        return channelsById.get(id, null);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class BoomLwjgl3 extends Boom {
         if(music.isPlaying()) {
             int sourceId = ((OpenALMusic) music).getSourceId();
             if(sourceId != -1) {
-                musicChannels.put(music, channel == null ? -1 : channel.getIndex());
+                musicChannels.put(music, channel == null ? -1 : channel.getId());
                 postPlay(sourceId, (BoomChannelLwjgl3) channel);
             }
         }
