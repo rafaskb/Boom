@@ -1,4 +1,4 @@
-# gdx-boom
+# Boom
 LibGDX extension that brings special effects to audio. 💥
 
 **Warning! This library is still in early development!**
@@ -22,7 +22,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    compile 'com.github.rafaskb.gdx-boom:core:master-SNAPSHOT'
+    compile 'com.github.rafaskb.boom:core:master-SNAPSHOT'
 }
 ```
 
@@ -30,7 +30,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    compile 'com.github.rafaskb.gdx-boom:lwjgl3:master-SNAPSHOT'
+    compile 'com.github.rafaskb.boom:lwjgl3:master-SNAPSHOT'
 }
 ```
 

@@ -17,7 +17,7 @@ sourceCompatibility = 1.8
 group 'com.rafaskoberg'
 version '0.1.0'
 
-def projectName = 'gdx-boom'
+def projectName = 'boom'
 def projectDescription = 'LibGDX extension that brings special effects to audio.'
 
 def gdxVersion = '1.9.9'
@@ -29,7 +29,7 @@ allprojects {
 
     version = '0.0.1-SNAPSHOT'
     ext {
-        appName = "gdx-boom"
+        appName = "boom"
         groupName = "com.rafaskoberg.gdx"
         gdxVersion = '1.9.9'
     }

@@ -1,4 +1,4 @@
-rootProject.name = 'gdx-boom'
+rootProject.name = 'boom'
 
 include 'lwjgl3'
 include 'core'
