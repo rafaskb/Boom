@@ -2,7 +2,10 @@ package com.rafaskoberg.boom;
 
 import com.badlogic.gdx.utils.Array;
 import com.rafaskoberg.boom.effect.BoomEffect;
+import com.rafaskoberg.boom.effect.DistortionEffectLwjgl3;
 import com.rafaskoberg.boom.effect.ReverbEffectLwjgl3;
+import com.rafaskoberg.boom.effect.distortion.DistortionData;
+import com.rafaskoberg.boom.effect.distortion.DistortionPreset;
 import com.rafaskoberg.boom.effect.reverb.ReverbData;
 import com.rafaskoberg.boom.effect.reverb.ReverbPreset;
 import com.rafaskoberg.boom.util.EFXUtil;
@@ -48,6 +51,21 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, reverb.alEffect);
         EFXUtil.checkAlError();
         return reverb;
+    }
+
+    @Override
+    public BoomEffect addDistortion(DistortionPreset preset) {
+        return addDistortion(preset.getData());
+    }
+
+    @Override
+    public BoomEffect addDistortion(DistortionData data) {
+        DistortionEffectLwjgl3 distortion = new DistortionEffectLwjgl3(data);
+        effects.add(distortion);
+        distortion.apply(alAuxSlot);
+        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, distortion.alEffect);
+        EFXUtil.checkAlError();
+        return distortion;
     }
 
     @Override
