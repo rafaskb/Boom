@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.rafaskoberg.boom.effect.BoomEffect;
 import com.rafaskoberg.boom.effect.distortion.DistortionData;
 import com.rafaskoberg.boom.effect.distortion.DistortionPreset;
+import com.rafaskoberg.boom.effect.echo.EchoData;
+import com.rafaskoberg.boom.effect.echo.EchoPreset;
 import com.rafaskoberg.boom.effect.reverb.ReverbData;
 import com.rafaskoberg.boom.effect.reverb.ReverbPreset;
 
@@ -46,6 +48,10 @@ public abstract class BoomChannel {
     public abstract BoomEffect addDistortion(DistortionPreset preset);
 
     public abstract BoomEffect addDistortion(DistortionData data);
+
+    public abstract BoomEffect addEcho(EchoPreset preset);
+
+    public abstract BoomEffect addEcho(EchoData data);
 
     public abstract void removeEffect(BoomEffect effect);
 
