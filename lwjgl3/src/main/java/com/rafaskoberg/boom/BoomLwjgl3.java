@@ -142,10 +142,13 @@ public class BoomLwjgl3 extends Boom {
         }
     }
 
-    private static Integer getSourceId(long soundId) {
+    private static int getSourceId(long soundId) {
         try {
             LongMap<Integer> soundIdToSource = (LongMap<Integer>) f_soundIdToSource.get(Gdx.audio);
-            return soundIdToSource.get(soundId);
+            Integer result = soundIdToSource.get(soundId);
+            if(result != null) {
+                return result;
+            }
         } catch(ReflectionException e) {
             e.printStackTrace();
         }
