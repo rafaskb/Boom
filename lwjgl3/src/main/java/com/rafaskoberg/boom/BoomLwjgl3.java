@@ -66,7 +66,11 @@ public class BoomLwjgl3 extends Boom {
 
             // Update channel effects
             int id = entry.value;
-            postPlay(sourceId, (BoomChannelLwjgl3) getChannel(id));
+            try {
+                postPlay(sourceId, (BoomChannelLwjgl3) getChannel(id));
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -94,7 +98,9 @@ public class BoomLwjgl3 extends Boom {
         long soundId = sound.play(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
-            postPlay(sourceId, (BoomChannelLwjgl3) channel);
+            if(!postPlay(sourceId, (BoomChannelLwjgl3) channel)) {
+                return -1;
+            }
         }
         return soundId;
     }
@@ -104,7 +110,9 @@ public class BoomLwjgl3 extends Boom {
         long soundId = sound.loop(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
-            postPlay(sourceId, (BoomChannelLwjgl3) channel);
+            if(!postPlay(sourceId, (BoomChannelLwjgl3) channel)) {
+                return -1;
+            }
         }
         return soundId;
     }
@@ -126,7 +134,7 @@ public class BoomLwjgl3 extends Boom {
         }
     }
 
-    private void postPlay(int sourceId, BoomChannelLwjgl3 channel) {
+    private boolean postPlay(int sourceId, BoomChannelLwjgl3 channel) {
         if(sourceId != -1) {
 
             // Apply channel effect
@@ -138,8 +146,14 @@ public class BoomLwjgl3 extends Boom {
                 AL10.alSourcei(sourceId, AL_DIRECT_FILTER, EXTEfx.AL_FILTER_NULL);
             }
             AL11.alSource3i(sourceId, EXTEfx.AL_AUXILIARY_SEND_FILTER, alAuxSlot, 0, EXTEfx.AL_FILTER_NULL);
-            EFXUtil.checkAlError();
+            try {
+                EFXUtil.checkAlError();
+            } catch(IllegalStateException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
+        return true;
     }
 
     private static int getSourceId(long soundId) {

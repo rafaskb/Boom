@@ -52,7 +52,12 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         effects.add(reverb);
         reverb.apply(alAuxSlot);
         alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, reverb.alEffect);
-        EFXUtil.checkAlError();
+        try {
+            EFXUtil.checkAlError();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return reverb;
     }
 
@@ -67,7 +72,12 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         effects.add(distortion);
         distortion.apply(alAuxSlot);
         alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, distortion.alEffect);
-        EFXUtil.checkAlError();
+        try {
+            EFXUtil.checkAlError();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return distortion;
     }
 
@@ -82,7 +92,12 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         effects.add(echo);
         echo.apply(alAuxSlot);
         alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, echo.alEffect);
-        EFXUtil.checkAlError();
+        try {
+            EFXUtil.checkAlError();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return echo;
     }
 
