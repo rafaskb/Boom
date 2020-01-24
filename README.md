@@ -57,7 +57,7 @@ public class MyGame extends Game {
         Sound mySound = Gdx.audio.newSound(Gdx.files.internal("path/to/sound.wav"));
         
         // Play your sounds through Boom
-        boom.play(sound, myChannel);
+        boom.play(mySound, myChannel);
     }
 }
 ```
