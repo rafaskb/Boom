@@ -95,7 +95,7 @@ public class BoomLwjgl3 extends Boom {
 
     @Override
     public long play(Sound sound, BoomChannel channel, float volume, float pitch, float pan) {
-        long soundId = sound.play(volume, pitch, pan);
+        long soundId = sound == null ? -1 : sound.play(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
             if(!postPlay(sourceId, (BoomChannelLwjgl3) channel)) {
@@ -107,7 +107,7 @@ public class BoomLwjgl3 extends Boom {
 
     @Override
     public long loop(Sound sound, BoomChannel channel, float volume, float pitch, float pan) {
-        long soundId = sound.loop(volume, pitch, pan);
+        long soundId = sound == null ? -1 : sound.loop(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
             if(!postPlay(sourceId, (BoomChannelLwjgl3) channel)) {
@@ -119,13 +119,15 @@ public class BoomLwjgl3 extends Boom {
 
     @Override
     public void play(Music music, BoomChannel channel) {
-        music.play();
-        changeMusicChannel(music, channel);
+        if(music != null) {
+            music.play();
+            changeMusicChannel(music, channel);
+        }
     }
 
     @Override
     public void changeMusicChannel(Music music, BoomChannel channel) {
-        if(music.isPlaying()) {
+        if(music != null && music.isPlaying()) {
             int sourceId = ((OpenALMusic) music).getSourceId();
             if(sourceId != -1) {
                 musicChannels.put(music, channel == null ? -1 : channel.getId());
