@@ -10,29 +10,44 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 public abstract class Boom {
 
     public static Boom init() {
+        return init(false);
+    }
+
+    public static Boom init(boolean verbose) {
         // Get application
         if(Gdx.app == null) {
             throw new IllegalStateException("Couldn't obtain application from Gdx.app to initialize Boom.");
         }
 
         // Initialize
-        Gdx.app.log("Boom", "Initializing Boom.");
+        if(verbose) {
+            Gdx.app.log("Boom", "Initializing Boom.");
+        }
         Boom boom = null;
         try {
             ApplicationType type = Gdx.app.getType();
             if(type == ApplicationType.Desktop) {
+                if(verbose) {
+                    Gdx.app.log("Boom", "Attempting to load BoomLwjgl3...");
+                }
                 String className = "com.rafaskoberg.boom.BoomLwjgl3";
                 Class<? extends Boom> clazz = ClassReflection.forName(className);
                 Object instance = clazz.newInstance();
                 boom = (Boom) instance;
+                if(verbose) {
+                    Gdx.app.log("Boom", "Loaded BoomLwjgl3.");
+                }
             }
-        } catch(ReflectionException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch(ReflectionException | InstantiationException | IllegalAccessException ignored) {
         }
 
-        // Unsuported platform
-        if(boom == null) {
-            Gdx.app.log("Boom", "Failed to initialize Boom. This platform is not supported yet.");
+        // Log failure or success
+        if(verbose) {
+            if(boom == null) {
+                Gdx.app.log("Boom", "Failed to initialize Boom. This platform is not supported yet.");
+            } else {
+                Gdx.app.log("Boom", "Successfully initiated Boom.");
+            }
         }
 
         return boom;
