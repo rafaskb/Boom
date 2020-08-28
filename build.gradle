@@ -13,7 +13,7 @@ sourceCompatibility = 1.8
 
 def projectName = 'boom'
 def projectDescription = 'LibGDX extension that brings special effects to audio.'
-version '0.0.1-SNAPSHOT'
+version '0.0.2-SNAPSHOT'
 group 'com.rafaskoberg.gdx'
 
 // Disable JDK 8's doclint
