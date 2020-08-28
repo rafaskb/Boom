@@ -3,7 +3,7 @@ package com.rafaskoberg.boom;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.backends.lwjgl3.audio.OpenALAudio;
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALLwjgl3Audio;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
@@ -27,7 +27,7 @@ public class BoomLwjgl3 extends Boom {
 
     static {
         try {
-            f_soundIdToSource = ClassReflection.getDeclaredField(OpenALAudio.class, "soundIdToSource");
+            f_soundIdToSource = ClassReflection.getDeclaredField(OpenALLwjgl3Audio.class, "soundIdToSource");
             f_soundIdToSource.setAccessible(true);
         } catch(ReflectionException e) {
             e.printStackTrace();
