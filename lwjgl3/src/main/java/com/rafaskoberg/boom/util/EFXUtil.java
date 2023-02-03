@@ -37,8 +37,8 @@ import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.EXTEfx.*;
 
 /**
- * Utility class for the OpenAL extension ALC_EXT_EFX. Provides functions to check for the extension and support of
- * various effects and filters.
+ * Utility class for the OpenAL extension ALC_EXT_EFX. Provides functions to check for the extension and support of various effects and
+ * filters.
  * <p>
  * Currently supports ALC_EXT_EFX version 1.0 effects and filters.
  *
@@ -57,13 +57,12 @@ public final class EFXUtil {
     }
 
     /**
-     * Tests OpenAL to see whether the given effect type is supported. This is done by creating an effect of the given
-     * type. If creation succeeds the effect is supported.
+     * Tests OpenAL to see whether the given effect type is supported. This is done by creating an effect of the given type. If creation
+     * succeeds the effect is supported.
      *
      * @param effectType Type of effect whose support is to be tested, e.g. AL_EFFECT_REVERB.
      * @return True if it is supported, false if not.
-     * @throws OpenALException          If the request fails due to an AL_OUT_OF_MEMORY error or OpenAL has not been
-     *                                  created yet.
+     * @throws OpenALException          If the request fails due to an AL_OUT_OF_MEMORY error or OpenAL has not been created yet.
      * @throws IllegalArgumentException effectType is not a valid effect type.
      */
     public static boolean isEffectSupported(final int effectType) {
@@ -92,13 +91,12 @@ public final class EFXUtil {
     }
 
     /**
-     * Tests OpenAL to see whether the given filter type is supported. This is done by creating a filter of the given
-     * type. If creation succeeds the filter is supported.
+     * Tests OpenAL to see whether the given filter type is supported. This is done by creating a filter of the given type. If creation
+     * succeeds the filter is supported.
      *
      * @param filterType Type of filter whose support is to be tested, e.g. AL_FILTER_LOWPASS.
      * @return True if it is supported, false if not.
-     * @throws OpenALException          If the request fails due to an AL_OUT_OF_MEMORY error or OpenAL has not been
-     *                                  created yet.
+     * @throws OpenALException          If the request fails due to an AL_OUT_OF_MEMORY error or OpenAL has not been created yet.
      * @throws IllegalArgumentException filterType is not a valid filter type.
      */
     public static boolean isFilterSupported(final int filterType) {
@@ -120,8 +118,7 @@ public final class EFXUtil {
      * Generic test function to see if an EFX object supports a given kind of type. Works for effects and filters.
      *
      * @param objectType Type of object to test. Must be either EFXUtil.EFFECT or EFXUtil.FILTER.
-     * @param typeValue  OpenAL type the object should be tested for support, e.g. AL_FILTER_LOWPASS or
-     *                   AL_EFFECT_REVERB.
+     * @param typeValue  OpenAL type the object should be tested for support, e.g. AL_FILTER_LOWPASS or AL_EFFECT_REVERB.
      * @return True if object supports typeValue, false else.
      */
     private static boolean testSupportGeneric(final int objectType, final int typeValue) {

@@ -1,8 +1,5 @@
 package com.rafaskoberg.boom.effect;
 
-import com.rafaskoberg.boom.effect.BoomEffectData;
-import com.rafaskoberg.boom.effect.EffectType;
-
 /**
  * The distortion effect simulates turning up (overdriving) the gain stage on a guitar amplifier or adding a distortion pedal to an
  * instrument’s output. It is achieved by clipping the signal (adding more square wave-like components) and adding rich harmonics. The

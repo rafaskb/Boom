@@ -1,8 +1,5 @@
 package com.rafaskoberg.boom.effect;
 
-import com.rafaskoberg.boom.effect.BoomEffectData;
-import com.rafaskoberg.boom.effect.EffectType;
-
 /**
  * The pitch shifter applies time-invariant pitch shifting to the input signal, over a one octave range and controllable at a semi-tone and
  * cent resolution.

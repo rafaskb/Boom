@@ -1,8 +1,5 @@
 package com.rafaskoberg.boom.effect;
 
-import com.rafaskoberg.boom.effect.BoomEffectData;
-import com.rafaskoberg.boom.effect.EffectType;
-
 /**
  * The vocal morpher consists of a pair of 4-band formant filters, used to impose vocal tract effects upon the input signal. If the input
  * signal is a broadband sound such as pink noise or a car engine, the vocal morpher can provide a wide variety of filtering effects. A
