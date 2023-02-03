@@ -25,6 +25,7 @@ import com.rafaskoberg.boom.effect.RingModulatorData;
 import com.rafaskoberg.boom.effect.RingModulatorEffectLwjgl3;
 import com.rafaskoberg.boom.effect.VocalMorpherData;
 import com.rafaskoberg.boom.effect.VocalMorpherEffectLwjgl3;
+import com.rafaskoberg.boom.filter.BoomFilterLwjgl3;
 import com.rafaskoberg.boom.util.BoomError;
 import org.lwjgl.openal.AL10;
 
@@ -33,22 +34,18 @@ import static org.lwjgl.openal.EXTEfx.*;
 public class BoomChannelLwjgl3 extends BoomChannel {
     private final Array<BoomEffectLwjgl3> effects;
 
-    private int alSourceFilter = 0;
+    private final int alFilter;
 
     BoomChannelLwjgl3(int id) {
         super(id);
         this.effects = new Array<>();
-        this.alSourceFilter = alGenFilters();
-        alFilteri(alSourceFilter, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
 
         // Check for errors
         BoomError.check("Error while creating a BoomChannel of ID " + id);
-    }
 
-    @Override
-    public void setSourceGain(float sourceGain) {
-        super.setSourceGain(sourceGain);
-
+        // Create filter
+        this.filter = new BoomFilterLwjgl3();
+        this.alFilter = ((BoomFilterLwjgl3) filter).getAlFilter();
     }
 
     @Override
@@ -144,9 +141,7 @@ public class BoomChannelLwjgl3 extends BoomChannel {
 
     @Override
     protected void apply(int sourceId) {
-        alFilterf(alSourceFilter, AL_LOWPASS_GAIN, getSourceGain());
-        alFilterf(alSourceFilter, AL_LOWPASS_GAINHF, (float) Math.pow(getSourceCutoff(), 6));
-        AL10.alSourcei(sourceId, AL_DIRECT_FILTER, alSourceFilter);
+        AL10.alSourcei(sourceId, AL_DIRECT_FILTER, alFilter);
     }
 
 }

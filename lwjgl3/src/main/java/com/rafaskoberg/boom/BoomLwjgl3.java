@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
+import com.rafaskoberg.boom.filter.BoomFilterLwjgl3;
 import com.rafaskoberg.boom.util.BoomError;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
@@ -153,8 +154,10 @@ public class BoomLwjgl3 extends Boom {
                 Array<BoomEffectLwjgl3> effects = channel.getEffects();
                 for(int i = 0; i < 2; i++) {
                     BoomEffectLwjgl3 effect = i < effects.size ? effects.get(i) : null;
+                    BoomFilterLwjgl3 filter = effect != null ? (BoomFilterLwjgl3) effect.getFilter() : null;
                     int alAuxSlot = effect != null ? effect.alAuxSlot : AL_EFFECTSLOT_NULL;
-                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, alAuxSlot, i, AL_FILTER_NULL);
+                    int alFilter = filter != null ? filter.getAlFilter() : AL_FILTER_NULL;
+                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, alAuxSlot, i, alFilter);
                 }
 
                 // Check for errors
