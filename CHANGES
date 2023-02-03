@@ -1,2 +1,3 @@
 [SNAPSHOT]
 - BREAKING: Added generic methods "addEffect" to BoomChannel, and removed specialized ones such as "addReverb".
+- Channels can have two effects at once instead of just one.

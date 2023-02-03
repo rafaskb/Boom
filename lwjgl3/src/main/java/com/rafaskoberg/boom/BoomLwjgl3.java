@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALLwjgl3Audio;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
 import com.badlogic.gdx.utils.ObjectIntMap;
@@ -18,9 +19,8 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.rafaskoberg.boom.util.EFXUtil;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
-import org.lwjgl.openal.EXTEfx;
 
-import static org.lwjgl.openal.EXTEfx.AL_DIRECT_FILTER;
+import static org.lwjgl.openal.EXTEfx.*;
 
 public class BoomLwjgl3 extends Boom {
     private static Field f_soundIdToSource;
@@ -139,15 +139,25 @@ public class BoomLwjgl3 extends Boom {
     private boolean postPlay(int sourceId, BoomChannelLwjgl3 channel) {
         if(sourceId != -1) {
 
-            // Apply channel effect
-            int alAuxSlot = channel == null ? EXTEfx.AL_EFFECTSLOT_NULL : channel.getAlAuxSlot();
+            // If channel is null, reset audio source
+            if(channel == null) {
+                AL10.alSourcei(sourceId, AL_DIRECT_FILTER, AL_FILTER_NULL);
+                AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL);
+                AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 1, AL_FILTER_NULL);
+            }
+
+            // Apply channel effects
             if(channel != null) {
                 channel.apply(sourceId);
-            } else {
-                // Reset channel gain
-                AL10.alSourcei(sourceId, AL_DIRECT_FILTER, EXTEfx.AL_FILTER_NULL);
+                Array<BoomEffectLwjgl3> effects = channel.getEffects();
+                for(int i = 0; i < 2; i++) {
+                    BoomEffectLwjgl3 effect = i < effects.size ? effects.get(i) : null;
+                    int alAuxSlot = effect != null ? effect.alAuxSlot : AL_EFFECTSLOT_NULL;
+                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, alAuxSlot, i, AL_FILTER_NULL);
+                }
             }
-            AL11.alSource3i(sourceId, EXTEfx.AL_AUXILIARY_SEND_FILTER, alAuxSlot, 0, EXTEfx.AL_FILTER_NULL);
+
+            // Check for errors
             try {
                 EFXUtil.checkAlError();
             } catch(IllegalStateException e) {

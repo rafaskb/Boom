@@ -1,20 +1,20 @@
 package com.rafaskoberg.boom.effect;
 
+import com.rafaskoberg.boom.BoomEffectLwjgl3;
 import com.rafaskoberg.boom.effect.reverb.ReverbData;
 
 import static org.lwjgl.openal.EXTEfx.*;
 
-public class ReverbEffectLwjgl3 extends BoomEffect {
+public class ReverbEffectLwjgl3 extends BoomEffectLwjgl3 {
     private final ReverbData data;
-    public final int alEffect;
 
     public ReverbEffectLwjgl3(ReverbData data) {
+        super();
         this.data = data;
-        this.alEffect = alGenEffects();
     }
 
     @Override
-    public void apply(int alAuxSlot) {
+    public void apply() {
         alEffecti(alEffect, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
 
         alEffectf(alEffect, AL_EAXREVERB_DENSITY, data.density);
@@ -41,11 +41,12 @@ public class ReverbEffectLwjgl3 extends BoomEffect {
         alEffectf(alEffect, AL_EAXREVERB_ROOM_ROLLOFF_FACTOR, data.roomRolloffFactor);
         alEffecti(alEffect, AL_EAXREVERB_DECAY_HFLIMIT, data.decayHFLimit);
 
+        // Set effect to aux slot
         alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, alEffect);
     }
 
     @Override
-    public void remove(int alAuxSlot) {
+    public void remove() {
         alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, AL_EFFECT_NULL);
     }
 

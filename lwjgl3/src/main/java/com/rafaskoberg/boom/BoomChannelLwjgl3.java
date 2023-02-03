@@ -19,15 +19,13 @@ import org.lwjgl.openal.AL10;
 import static org.lwjgl.openal.EXTEfx.*;
 
 public class BoomChannelLwjgl3 extends BoomChannel {
-    private final Array<BoomEffect> effects;
+    private final Array<BoomEffectLwjgl3> effects;
 
-    private int alAuxSlot = 0;
     private int alSourceFilter = 0;
 
     BoomChannelLwjgl3(int id) {
         super(id);
         this.effects = new Array<>();
-        this.alAuxSlot = alGenAuxiliaryEffectSlots();
         this.alSourceFilter = alGenFilters();
         alFilteri(alSourceFilter, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
     }
@@ -39,14 +37,15 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     }
 
     @Override
-    protected int getAlAuxSlot() {
-        return alAuxSlot;
-    }
-
-    @Override
     public BoomEffect addEffect(BoomEffectData effectData) {
+        // Ensure capacity
+        if(effects.size == 2) {
+            Gdx.app.error("Boom", "The maximum amount of effects per channel is 2, and this channel (ID " + getId() + ") is already full.");
+            return null;
+        }
+
         // Create effect
-        final BoomEffect effect;
+        final BoomEffectLwjgl3 effect;
         EffectType effectType = effectData.getType();
         if(effectType == EffectType.REVERB) {
             effect = new ReverbEffectLwjgl3((ReverbData) effectData);
@@ -66,9 +65,11 @@ public class BoomChannelLwjgl3 extends BoomChannel {
             return null;
         }
 
-        // Apply
+        // Apply effect
+        effect.apply();
+
+        // Cache
         effects.add(effect);
-        effect.apply(alAuxSlot);
 
         // Check for errors
         try {
@@ -84,8 +85,10 @@ public class BoomChannelLwjgl3 extends BoomChannel {
 
     @Override
     public void removeEffect(BoomEffect effect) {
-        if(effects.removeValue(effect, true)) {
-            effect.remove(alAuxSlot);
+        BoomEffectLwjgl3 effectLwjgl3 = (BoomEffectLwjgl3) effect;
+        if(effects.removeValue(effectLwjgl3, true)) {
+            effectLwjgl3.remove();
+            effectLwjgl3.dispose();
         }
     }
 
@@ -98,10 +101,15 @@ public class BoomChannelLwjgl3 extends BoomChannel {
 
     @Override
     public void removeAllEffects() {
-        for(BoomEffect effect : effects) {
-            effect.remove(alAuxSlot);
+        for(BoomEffectLwjgl3 effect : effects) {
+            effect.remove();
+            effect.dispose();
         }
         effects.clear();
+    }
+
+    public Array<BoomEffectLwjgl3> getEffects() {
+        return effects;
     }
 
     @Override

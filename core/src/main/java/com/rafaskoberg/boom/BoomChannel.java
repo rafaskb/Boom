@@ -60,7 +60,7 @@ public abstract class BoomChannel {
     }
 
     /**
-     * Adds a new effect to this channel.
+     * Adds a new effect to this channel. The maximum amount of effects per channel is 2.
      */
     public abstract BoomEffect addEffect(BoomEffectData effect);
 
@@ -78,8 +78,6 @@ public abstract class BoomChannel {
      * Removes all effects from this channel.
      */
     public abstract void removeAllEffects();
-
-    protected abstract int getAlAuxSlot();
 
     protected abstract void apply(int sourceId);
 }
