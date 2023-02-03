@@ -4,7 +4,12 @@ import com.rafaskoberg.boom.effect.BoomEffectData;
 import com.rafaskoberg.boom.effect.EffectType;
 
 /**
- * Settings for AL_EFFECT_DISTORTION
+ * The distortion effect simulates turning up (overdriving) the gain stage on a guitar amplifier or adding a distortion pedal to an
+ * instrument’s output. It is achieved by clipping the signal (adding more square wave-like components) and adding rich harmonics. The
+ * distortion effect could be very useful for adding extra dynamics to engine sounds in a driving simulator, or modifying samples such as
+ * vocal communications. The OpenAL Effects Extension distortion effect also includes EQ on the output signal, to help ‘rein in’ excessive
+ * frequency content in distorted audio. A low-pass filter is applied to input signal before the distortion effect, to limit excessive
+ * distorted signals at high frequencies.
  */
 public class DistortionData implements BoomEffectData {
 

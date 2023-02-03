@@ -4,7 +4,8 @@ import com.rafaskoberg.boom.effect.BoomEffectData;
 import com.rafaskoberg.boom.effect.EffectType;
 
 /**
- * Settings for AL_EFFECT_ECHO
+ * The echo effect generates discrete, delayed instances of the input signal. The amount of delay and feedback is controllable. The delay is
+ * ‘two tap’ – you can control the interaction between two separate instances of echoes.
  */
 public class EchoData implements BoomEffectData {
 

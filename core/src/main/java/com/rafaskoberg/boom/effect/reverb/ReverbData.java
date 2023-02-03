@@ -4,7 +4,9 @@ import com.rafaskoberg.boom.effect.BoomEffectData;
 import com.rafaskoberg.boom.effect.EffectType;
 
 /**
- * Settings for AL_EFFECT_EAXREVERB
+ * Simulates a reverberation effect, which occurs when a sound hits any hard surface and reflects back to the listener at varying times and
+ * amplitudes to create a complex echo, which carries information about that physical space. Reverb pedals or effects simulate or exaggerate
+ * natural reverberations.
  */
 public class ReverbData implements BoomEffectData {
 
