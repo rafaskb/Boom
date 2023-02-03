@@ -13,7 +13,7 @@ import com.rafaskoberg.boom.effect.distortion.DistortionData;
 import com.rafaskoberg.boom.effect.echo.EchoData;
 import com.rafaskoberg.boom.effect.pitchshifter.PitchShifterData;
 import com.rafaskoberg.boom.effect.reverb.ReverbData;
-import com.rafaskoberg.boom.util.EFXUtil;
+import com.rafaskoberg.boom.util.BoomError;
 import org.lwjgl.openal.AL10;
 
 import static org.lwjgl.openal.EXTEfx.*;
@@ -28,6 +28,9 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         this.effects = new Array<>();
         this.alSourceFilter = alGenFilters();
         alFilteri(alSourceFilter, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
+
+        // Check for errors
+        BoomError.check("Error while creating a BoomChannel of ID " + id);
     }
 
     @Override
@@ -72,10 +75,7 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         effects.add(effect);
 
         // Check for errors
-        try {
-            EFXUtil.checkAlError();
-        } catch(Exception e) {
-            Gdx.app.error("Boom", "OpenAL error while applying effect " + effectType, e);
+        if(BoomError.check("Error while applying effect " + effectType)) {
             return null;
         }
 
@@ -90,6 +90,9 @@ public class BoomChannelLwjgl3 extends BoomChannel {
             effectLwjgl3.remove();
             effectLwjgl3.dispose();
         }
+
+        // Check for errors
+        BoomError.check("Rrror while removing effect");
     }
 
     @Override
@@ -106,6 +109,9 @@ public class BoomChannelLwjgl3 extends BoomChannel {
             effect.dispose();
         }
         effects.clear();
+
+        // Check for errors
+        BoomError.check("Error while removing effects");
     }
 
     public Array<BoomEffectLwjgl3> getEffects() {

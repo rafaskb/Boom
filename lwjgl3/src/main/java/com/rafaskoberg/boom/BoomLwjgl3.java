@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import com.rafaskoberg.boom.util.EFXUtil;
+import com.rafaskoberg.boom.util.BoomError;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 
@@ -66,11 +66,7 @@ public class BoomLwjgl3 extends Boom {
 
             // Update channel effects
             int id = entry.value;
-            try {
-                postPlay(sourceId, (BoomChannelLwjgl3) getChannel(id));
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
+            postPlay(sourceId, (BoomChannelLwjgl3) getChannel(id));
         }
     }
 
@@ -144,6 +140,11 @@ public class BoomLwjgl3 extends Boom {
                 AL10.alSourcei(sourceId, AL_DIRECT_FILTER, AL_FILTER_NULL);
                 AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL);
                 AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 1, AL_FILTER_NULL);
+
+                // Check for errors
+                if(BoomError.check("Error while resetting an audio source with no channel")) {
+                    return false;
+                }
             }
 
             // Apply channel effects
@@ -155,14 +156,11 @@ public class BoomLwjgl3 extends Boom {
                     int alAuxSlot = effect != null ? effect.alAuxSlot : AL_EFFECTSLOT_NULL;
                     AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, alAuxSlot, i, AL_FILTER_NULL);
                 }
-            }
 
-            // Check for errors
-            try {
-                EFXUtil.checkAlError();
-            } catch(IllegalStateException e) {
-                e.printStackTrace();
-                return false;
+                // Check for errors
+                if(BoomError.check("Error while applying channel effects to an an audio source")) {
+                    return false;
+                }
             }
         }
         return true;
@@ -176,7 +174,7 @@ public class BoomLwjgl3 extends Boom {
                 return result;
             }
         } catch(ReflectionException e) {
-            e.printStackTrace();
+            Gdx.app.error("Boom", "Error while getting the sourceId from soundId " + soundId + " via reflection.", e);
         }
         return -1;
     }
