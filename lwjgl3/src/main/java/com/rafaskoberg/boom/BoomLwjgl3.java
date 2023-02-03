@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALLwjgl3Audio;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
@@ -92,6 +93,12 @@ public class BoomLwjgl3 extends Boom {
 
     @Override
     public long play(Sound sound, BoomChannel channel, float volume, float pitch, float pan) {
+        // Sanitize parameters
+        volume = MathUtils.clamp(volume, 0, 1);
+        pitch = MathUtils.clamp(pitch, 0.05f, 10f);
+        pan = MathUtils.clamp(pan, -1f, 1f);
+
+        // Play
         long soundId = sound == null ? -1 : sound.play(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
@@ -104,6 +111,12 @@ public class BoomLwjgl3 extends Boom {
 
     @Override
     public long loop(Sound sound, BoomChannel channel, float volume, float pitch, float pan) {
+        // Sanitize parameters
+        volume = MathUtils.clamp(volume, 0, 1);
+        pitch = MathUtils.clamp(pitch, 0.05f, 10f);
+        pan = MathUtils.clamp(pan, -1f, 1f);
+
+        // Play
         long soundId = sound == null ? -1 : sound.loop(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
