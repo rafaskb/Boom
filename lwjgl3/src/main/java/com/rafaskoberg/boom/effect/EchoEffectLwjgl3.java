@@ -6,7 +6,7 @@ import static org.lwjgl.openal.EXTEfx.*;
 
 public class EchoEffectLwjgl3 extends BoomEffect {
     private final EchoData data;
-    public final  int      alEffect;
+    public final int alEffect;
 
     public EchoEffectLwjgl3(EchoData data) {
         this.data = data;
@@ -22,6 +22,8 @@ public class EchoEffectLwjgl3 extends BoomEffect {
         alEffectf(alEffect, AL_ECHO_DAMPING, data.damping);
         alEffectf(alEffect, AL_ECHO_FEEDBACK, data.feedback);
         alEffectf(alEffect, AL_ECHO_SPREAD, data.spread);
+
+        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, alEffect);
     }
 
     @Override

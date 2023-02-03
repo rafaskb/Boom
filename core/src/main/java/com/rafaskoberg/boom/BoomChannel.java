@@ -2,20 +2,16 @@ package com.rafaskoberg.boom;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.rafaskoberg.boom.effect.BoomEffect;
-import com.rafaskoberg.boom.effect.distortion.DistortionData;
-import com.rafaskoberg.boom.effect.distortion.DistortionPreset;
-import com.rafaskoberg.boom.effect.echo.EchoData;
-import com.rafaskoberg.boom.effect.echo.EchoPreset;
-import com.rafaskoberg.boom.effect.reverb.ReverbData;
-import com.rafaskoberg.boom.effect.reverb.ReverbPreset;
+import com.rafaskoberg.boom.effect.BoomEffectData;
+import com.rafaskoberg.boom.effect.BoomEffectPreset;
 
 /**
  * Channel where sound effects and music tracks can be played through.
  */
 public abstract class BoomChannel {
-    private final int   id;
-    private       float sourceGain   = 1.0f;
-    private       float sourceCutoff = 1.0f;
+    private final int id;
+    private float sourceGain = 1.0f;
+    private float sourceCutoff = 1.0f;
 
     BoomChannel(int id) {
         this.id = id;
@@ -43,50 +39,30 @@ public abstract class BoomChannel {
     }
 
     /**
-     * Returns the source audio low pass filter cutoff, from 0 to 1. The lower this value is, less high frequencies will
-     * be played.
+     * Returns the source audio low pass filter cutoff, from 0 to 1. The lower this value is, less high frequencies will be played.
      */
     public float getSourceCutoff() {
         return sourceCutoff;
     }
 
     /**
-     * Sets the source audio low pass filter cutoff, from 0 to 1. The lower this value is, less high frequencies will be
-     * played.
+     * Sets the source audio low pass filter cutoff, from 0 to 1. The lower this value is, less high frequencies will be played.
      */
     public void setSourceCutoff(float sourceCutoff) {
         this.sourceCutoff = MathUtils.clamp(sourceCutoff, 0, 1);
     }
 
     /**
-     * Adds a reverb effect to this channel.
+     * Adds a new effect to this channel.
      */
-    public abstract BoomEffect addReverb(ReverbPreset preset);
+    public BoomEffect addEffect(BoomEffectPreset effect) {
+        return addEffect(effect.getData());
+    }
 
     /**
-     * Adds a reverb effect to this channel.
+     * Adds a new effect to this channel.
      */
-    public abstract BoomEffect addReverb(ReverbData data);
-
-    /**
-     * Adds a distortion effect to this channel.
-     */
-    public abstract BoomEffect addDistortion(DistortionPreset preset);
-
-    /**
-     * Adds a distortion effect to this channel.
-     */
-    public abstract BoomEffect addDistortion(DistortionData data);
-
-    /**
-     * Adds an echo effect to this channel.
-     */
-    public abstract BoomEffect addEcho(EchoPreset preset);
-
-    /**
-     * Adds an echo effect to this channel.
-     */
-    public abstract BoomEffect addEcho(EchoData data);
+    public abstract BoomEffect addEffect(BoomEffectData effect);
 
     /**
      * Removes a certain effect from this channel.

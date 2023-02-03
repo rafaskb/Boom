@@ -1,16 +1,16 @@
 package com.rafaskoberg.boom;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.rafaskoberg.boom.effect.BoomEffect;
+import com.rafaskoberg.boom.effect.BoomEffectData;
 import com.rafaskoberg.boom.effect.DistortionEffectLwjgl3;
 import com.rafaskoberg.boom.effect.EchoEffectLwjgl3;
+import com.rafaskoberg.boom.effect.EffectType;
 import com.rafaskoberg.boom.effect.ReverbEffectLwjgl3;
 import com.rafaskoberg.boom.effect.distortion.DistortionData;
-import com.rafaskoberg.boom.effect.distortion.DistortionPreset;
 import com.rafaskoberg.boom.effect.echo.EchoData;
-import com.rafaskoberg.boom.effect.echo.EchoPreset;
 import com.rafaskoberg.boom.effect.reverb.ReverbData;
-import com.rafaskoberg.boom.effect.reverb.ReverbPreset;
 import com.rafaskoberg.boom.util.EFXUtil;
 import org.lwjgl.openal.AL10;
 
@@ -19,7 +19,7 @@ import static org.lwjgl.openal.EXTEfx.*;
 public class BoomChannelLwjgl3 extends BoomChannel {
     private final Array<BoomEffect> effects;
 
-    private int alAuxSlot      = 0;
+    private int alAuxSlot = 0;
     private int alSourceFilter = 0;
 
     BoomChannelLwjgl3(int id) {
@@ -42,63 +42,40 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     }
 
     @Override
-    public BoomEffect addReverb(ReverbPreset preset) {
-        return addReverb(preset.getData());
-    }
+    public BoomEffect addEffect(BoomEffectData effectData) {
+        // Create effect
+        final BoomEffect effect;
+        EffectType effectType = effectData.getType();
+        if(effectType == EffectType.REVERB) {
+            effect = new ReverbEffectLwjgl3((ReverbData) effectData);
+        } else if(effectType == EffectType.ECHO) {
+            effect = new EchoEffectLwjgl3((EchoData) effectData);
+        } else if(effectType == EffectType.DISTORTION) {
+            effect = new DistortionEffectLwjgl3((DistortionData) effectData);
+        } else {
+            effect = null;
+        }
 
-    @Override
-    public BoomEffect addReverb(ReverbData data) {
-        ReverbEffectLwjgl3 reverb = new ReverbEffectLwjgl3(data);
-        effects.add(reverb);
-        reverb.apply(alAuxSlot);
-        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, reverb.alEffect);
+        // Ensure effect is not null
+        if(effect == null) {
+            Gdx.app.error("Boom", "Effect is null, perhaps this effect type (" + effectType + ") is not implemented yet.");
+            return null;
+        }
+
+        // Apply
+        effects.add(effect);
+        effect.apply(alAuxSlot);
+
+        // Check for errors
         try {
             EFXUtil.checkAlError();
         } catch(Exception e) {
-            e.printStackTrace();
+            Gdx.app.error("Boom", "OpenAL error while applying effect " + effectType, e);
             return null;
         }
-        return reverb;
-    }
 
-    @Override
-    public BoomEffect addDistortion(DistortionPreset preset) {
-        return addDistortion(preset.getData());
-    }
-
-    @Override
-    public BoomEffect addDistortion(DistortionData data) {
-        DistortionEffectLwjgl3 distortion = new DistortionEffectLwjgl3(data);
-        effects.add(distortion);
-        distortion.apply(alAuxSlot);
-        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, distortion.alEffect);
-        try {
-            EFXUtil.checkAlError();
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return distortion;
-    }
-
-    @Override
-    public BoomEffect addEcho(EchoPreset preset) {
-        return addEcho(preset.getData());
-    }
-
-    @Override
-    public BoomEffect addEcho(EchoData data) {
-        EchoEffectLwjgl3 echo = new EchoEffectLwjgl3(data);
-        effects.add(echo);
-        echo.apply(alAuxSlot);
-        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, echo.alEffect);
-        try {
-            EFXUtil.checkAlError();
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return echo;
+        // Return effect
+        return effect;
     }
 
     @Override

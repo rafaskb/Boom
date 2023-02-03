@@ -8,8 +8,7 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 /**
- * Play music tracks and sound effects with the capability of having special post-processing effects, such as reverb and
- * filters.
+ * Play music tracks and sound effects with the capability of having special post-processing effects, such as reverb and filters.
  */
 public abstract class Boom {
 
@@ -109,8 +108,7 @@ public abstract class Boom {
      * @param sound     Sound to be played.
      * @param channelId The ID of the channel this sound should be played through.
      * @param volume    the volume in the range [0,1]
-     * @param pitch     the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5
-     *                  and 2.0
+     * @param pitch     the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5 and 2.0
      * @param pan       panning in the range -1 (full left) to 1 (full right). 0 is center position.
      * @return the id of the sound instance if successful, or -1 on failure.
      */
@@ -147,8 +145,7 @@ public abstract class Boom {
      * @param sound   Sound to be played.
      * @param channel Channel this sound should be played through.
      * @param volume  the volume in the range [0,1]
-     * @param pitch   the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5
-     *                and 2.0
+     * @param pitch   the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5 and 2.0
      * @param pan     panning in the range -1 (full left) to 1 (full right). 0 is center position.
      * @return the id of the sound instance if successful, or -1 on failure.
      */
@@ -183,8 +180,7 @@ public abstract class Boom {
      * @param sound     Sound to be played.
      * @param channelId The ID of the channel this sound should be played through.
      * @param volume    the volume in the range [0, 1]
-     * @param pitch     the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5
-     *                  and 2.0
+     * @param pitch     the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5 and 2.0
      * @param pan       panning in the range -1 (full left) to 1 (full right). 0 is center position.
      * @return the id of the sound instance if successful, or -1 on failure.
      */
@@ -221,16 +217,15 @@ public abstract class Boom {
      * @param sound   Sound to be played.
      * @param channel Channel this sound should be played through.
      * @param volume  the volume in the range [0, 1]
-     * @param pitch   the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5
-     *                and 2.0
+     * @param pitch   the pitch multiplier, 1 == default, >1 == faster, <1 == slower, the value has to be between 0.5 and 2.0
      * @param pan     panning in the range -1 (full left) to 1 (full right). 0 is center position.
      * @return the id of the sound instance if successful, or -1 on failure.
      */
     public abstract long loop(Sound sound, BoomChannel channel, float volume, float pitch, float pan);
 
     /**
-     * Starts the play back of the music stream. In case the stream was paused this will resume the play back. In case
-     * the music stream is finished playing this will restart the play back.
+     * Starts the play back of the music stream. In case the stream was paused this will resume the play back. In case the music stream is
+     * finished playing this will restart the play back.
      *
      * @param music     Music to be played.
      * @param channelId The ID of the channel this music should be played through.
@@ -240,8 +235,8 @@ public abstract class Boom {
     }
 
     /**
-     * Starts the play back of the music stream. In case the stream was paused this will resume the play back. In case
-     * the music stream is finished playing this will restart the play back.
+     * Starts the play back of the music stream. In case the stream was paused this will resume the play back. In case the music stream is
+     * finished playing this will restart the play back.
      *
      * @param music   Music to be played.
      * @param channel Channel this music should be played through.
@@ -249,8 +244,7 @@ public abstract class Boom {
     public abstract void play(Music music, BoomChannel channel);
 
     /**
-     * Changes the {@link BoomChannel} the given music is playing through. The music must be playing for this method to
-     * have any effect.
+     * Changes the {@link BoomChannel} the given music is playing through. The music must be playing for this method to have any effect.
      *
      * @param music     Music to have its channel changed.
      * @param channelId The ID of the channel this music should be played through.
@@ -260,8 +254,7 @@ public abstract class Boom {
     }
 
     /**
-     * Changes the {@link BoomChannel} the given music is playing through. The music must be playing for this method to
-     * have any effect.
+     * Changes the {@link BoomChannel} the given music is playing through. The music must be playing for this method to have any effect.
      *
      * @param music   Music to have its channel changed.
      * @param channel Channel this music should be played through.

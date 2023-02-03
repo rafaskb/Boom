@@ -1,0 +1,2 @@
+[SNAPSHOT]
+- BREAKING: Added generic methods "addEffect" to BoomChannel, and removed specialized ones such as "addReverb".

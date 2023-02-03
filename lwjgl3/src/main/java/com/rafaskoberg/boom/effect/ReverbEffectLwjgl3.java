@@ -6,7 +6,7 @@ import static org.lwjgl.openal.EXTEfx.*;
 
 public class ReverbEffectLwjgl3 extends BoomEffect {
     private final ReverbData data;
-    public final  int        alEffect;
+    public final int alEffect;
 
     public ReverbEffectLwjgl3(ReverbData data) {
         this.data = data;
@@ -40,6 +40,8 @@ public class ReverbEffectLwjgl3 extends BoomEffect {
         alEffectf(alEffect, AL_EAXREVERB_LFREFERENCE, data.lfReference);
         alEffectf(alEffect, AL_EAXREVERB_ROOM_ROLLOFF_FACTOR, data.roomRolloffFactor);
         alEffecti(alEffect, AL_EAXREVERB_DECAY_HFLIMIT, data.decayHFLimit);
+
+        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, alEffect);
     }
 
     @Override

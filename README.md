@@ -47,15 +47,17 @@ public class MyGame extends Game {
     public void create() {
         // Init Boom
         Boom boom = Boom.init();
-        
+
         // Create a channel to route your sounds through
         int channelId = 1;
         BoomChannel myChannel = boom.createChannel(channelId);
-        myChannel.addReverb(ReverbPreset.AUDITORIUM);
-        
+        myChannel.addEffect(ReverbPreset.AUDITORIUM);
+        myChannel.addEffect(DistortionPreset.SOFT);
+        myChannel.addEffect(new EchoData());
+
         // Create your sounds
         Sound mySound = Gdx.audio.newSound(Gdx.files.internal("path/to/sound.wav"));
-        
+
         // Play your sounds through Boom
         boom.play(mySound, myChannel);
     }

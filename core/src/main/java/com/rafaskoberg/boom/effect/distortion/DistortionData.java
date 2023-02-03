@@ -1,13 +1,15 @@
 package com.rafaskoberg.boom.effect.distortion;
 
+import com.rafaskoberg.boom.effect.BoomEffectData;
+import com.rafaskoberg.boom.effect.EffectType;
+
 /**
  * Settings for AL_EFFECT_DISTORTION
  */
-public class DistortionData {
+public class DistortionData implements BoomEffectData {
 
     /**
-     * This property controls the shape of the distortion. The higher the value for Edge, the ‘dirtier’ and ‘fuzzier’
-     * the effect.
+     * This property controls the shape of the distortion. The higher the value for Edge, the ‘dirtier’ and ‘fuzzier’ the effect.
      * <p>
      * Value range: 0.0 to 1.0; Default value: 0.2
      */
@@ -21,8 +23,7 @@ public class DistortionData {
     public float gain = 0.05f;
 
     /**
-     * Input signal can have a low pass filter applied, to limit the amount of high frequency signal feeding into the
-     * distortion effect.
+     * Input signal can have a low pass filter applied, to limit the amount of high frequency signal feeding into the distortion effect.
      * <p>
      * Value range 80.0 to 24000.0; Default value 8000.0
      */
@@ -42,15 +43,19 @@ public class DistortionData {
      */
     public float eqBandwidth = 3600;
 
-    /**
-     * See Appendix 1 of OpenAL guide to understand more about each parameter: <a href=https://kcat.strangesoft.net/misc-downloads/Effects%20Extension%20Guide.pdf>Effects
-     * Extension Guide</a>
-     */
+    public DistortionData() {
+    }
+
     public DistortionData(float edge, float gain, float lowPassCutoff, float eqCenter, float eqBandwidth) {
         this.edge = edge;
         this.gain = gain;
         this.lowPassCutoff = lowPassCutoff;
         this.eqCenter = eqCenter;
         this.eqBandwidth = eqBandwidth;
+    }
+
+    @Override
+    public EffectType getType() {
+        return EffectType.DISTORTION;
     }
 }

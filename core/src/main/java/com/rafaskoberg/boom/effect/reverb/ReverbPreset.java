@@ -1,6 +1,8 @@
 package com.rafaskoberg.boom.effect.reverb;
 
-public enum ReverbPreset {
+import com.rafaskoberg.boom.effect.BoomEffectPreset;
+
+public enum ReverbPreset implements BoomEffectPreset {
 
     // ===========================
     // ===   Default Presets   ===
@@ -162,6 +164,7 @@ public enum ReverbPreset {
         this.data = data;
     }
 
+    @Override
     public ReverbData getData() {
         return data;
     }

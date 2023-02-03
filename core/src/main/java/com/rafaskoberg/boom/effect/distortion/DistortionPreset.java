@@ -1,6 +1,8 @@
 package com.rafaskoberg.boom.effect.distortion;
 
-public enum DistortionPreset {
+import com.rafaskoberg.boom.effect.BoomEffectPreset;
+
+public enum DistortionPreset implements BoomEffectPreset {
 
     // ===========================
     // ===   Default Presets   ===
@@ -18,6 +20,7 @@ public enum DistortionPreset {
         this.data = data;
     }
 
+    @Override
     public DistortionData getData() {
         return data;
     }

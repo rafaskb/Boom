@@ -6,7 +6,7 @@ import static org.lwjgl.openal.EXTEfx.*;
 
 public class DistortionEffectLwjgl3 extends BoomEffect {
     private final DistortionData data;
-    public final  int            alEffect;
+    public final int alEffect;
 
     public DistortionEffectLwjgl3(DistortionData data) {
         this.data = data;
@@ -22,6 +22,8 @@ public class DistortionEffectLwjgl3 extends BoomEffect {
         alEffectf(alEffect, AL_DISTORTION_LOWPASS_CUTOFF, data.lowPassCutoff);
         alEffectf(alEffect, AL_DISTORTION_EQCENTER, data.eqCenter);
         alEffectf(alEffect, AL_DISTORTION_EQBANDWIDTH, data.eqBandwidth);
+
+        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, alEffect);
     }
 
     @Override
