@@ -36,7 +36,7 @@ allprojects {
     sourceSets.test.java.srcDirs = ["src/test/java"]
 
     ext {
-        gdxVersion = '1.9.11'
+        gdxVersion = '1.11.0'
     }
 
     repositories {
