@@ -4,5 +4,5 @@ public enum EffectType {
     DISTORTION,
     ECHO,
     REVERB,
-    ;
+    PITCH_SHIFTER;
 }

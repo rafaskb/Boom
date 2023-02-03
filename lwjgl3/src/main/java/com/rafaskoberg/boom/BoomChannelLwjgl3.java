@@ -7,9 +7,11 @@ import com.rafaskoberg.boom.effect.BoomEffectData;
 import com.rafaskoberg.boom.effect.DistortionEffectLwjgl3;
 import com.rafaskoberg.boom.effect.EchoEffectLwjgl3;
 import com.rafaskoberg.boom.effect.EffectType;
+import com.rafaskoberg.boom.effect.PitchShifterEffectLwjgl3;
 import com.rafaskoberg.boom.effect.ReverbEffectLwjgl3;
 import com.rafaskoberg.boom.effect.distortion.DistortionData;
 import com.rafaskoberg.boom.effect.echo.EchoData;
+import com.rafaskoberg.boom.effect.pitchshifter.PitchShifterData;
 import com.rafaskoberg.boom.effect.reverb.ReverbData;
 import com.rafaskoberg.boom.util.EFXUtil;
 import org.lwjgl.openal.AL10;
@@ -52,6 +54,8 @@ public class BoomChannelLwjgl3 extends BoomChannel {
             effect = new EchoEffectLwjgl3((EchoData) effectData);
         } else if(effectType == EffectType.DISTORTION) {
             effect = new DistortionEffectLwjgl3((DistortionData) effectData);
+        } else if(effectType == EffectType.PITCH_SHIFTER) {
+            effect = new PitchShifterEffectLwjgl3((PitchShifterData) effectData);
         } else {
             effect = null;
         }
