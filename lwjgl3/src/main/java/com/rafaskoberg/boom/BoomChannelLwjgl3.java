@@ -2,17 +2,29 @@ package com.rafaskoberg.boom;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
+import com.rafaskoberg.boom.effect.AutoWahData;
+import com.rafaskoberg.boom.effect.AutoWahEffectLwjgl3;
 import com.rafaskoberg.boom.effect.BoomEffect;
 import com.rafaskoberg.boom.effect.BoomEffectData;
+import com.rafaskoberg.boom.effect.ChorusData;
+import com.rafaskoberg.boom.effect.ChorusEffectLwjgl3;
+import com.rafaskoberg.boom.effect.CompressorData;
+import com.rafaskoberg.boom.effect.CompressorEffectLwjgl3;
+import com.rafaskoberg.boom.effect.DistortionData;
 import com.rafaskoberg.boom.effect.DistortionEffectLwjgl3;
+import com.rafaskoberg.boom.effect.EchoData;
 import com.rafaskoberg.boom.effect.EchoEffectLwjgl3;
 import com.rafaskoberg.boom.effect.EffectType;
+import com.rafaskoberg.boom.effect.FlangerData;
+import com.rafaskoberg.boom.effect.FlangerEffectLwjgl3;
+import com.rafaskoberg.boom.effect.PitchShifterData;
 import com.rafaskoberg.boom.effect.PitchShifterEffectLwjgl3;
+import com.rafaskoberg.boom.effect.ReverbData;
 import com.rafaskoberg.boom.effect.ReverbEffectLwjgl3;
-import com.rafaskoberg.boom.effect.distortion.DistortionData;
-import com.rafaskoberg.boom.effect.echo.EchoData;
-import com.rafaskoberg.boom.effect.pitchshifter.PitchShifterData;
-import com.rafaskoberg.boom.effect.reverb.ReverbData;
+import com.rafaskoberg.boom.effect.RingModulatorData;
+import com.rafaskoberg.boom.effect.RingModulatorEffectLwjgl3;
+import com.rafaskoberg.boom.effect.VocalMorpherData;
+import com.rafaskoberg.boom.effect.VocalMorpherEffectLwjgl3;
 import com.rafaskoberg.boom.util.BoomError;
 import org.lwjgl.openal.AL10;
 
@@ -50,14 +62,26 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         // Create effect
         final BoomEffectLwjgl3 effect;
         EffectType effectType = effectData.getType();
-        if(effectType == EffectType.REVERB) {
-            effect = new ReverbEffectLwjgl3((ReverbData) effectData);
-        } else if(effectType == EffectType.ECHO) {
-            effect = new EchoEffectLwjgl3((EchoData) effectData);
+        if(effectType == EffectType.AUTO_WAH) {
+            effect = new AutoWahEffectLwjgl3((AutoWahData) effectData);
+        } else if(effectType == EffectType.CHORUS) {
+            effect = new ChorusEffectLwjgl3((ChorusData) effectData);
+        } else if(effectType == EffectType.COMPRESSOR) {
+            effect = new CompressorEffectLwjgl3((CompressorData) effectData);
         } else if(effectType == EffectType.DISTORTION) {
             effect = new DistortionEffectLwjgl3((DistortionData) effectData);
+        } else if(effectType == EffectType.ECHO) {
+            effect = new EchoEffectLwjgl3((EchoData) effectData);
+        } else if(effectType == EffectType.FLANGER) {
+            effect = new FlangerEffectLwjgl3((FlangerData) effectData);
         } else if(effectType == EffectType.PITCH_SHIFTER) {
             effect = new PitchShifterEffectLwjgl3((PitchShifterData) effectData);
+        } else if(effectType == EffectType.REVERB) {
+            effect = new ReverbEffectLwjgl3((ReverbData) effectData);
+        } else if(effectType == EffectType.RING_MODULATOR) {
+            effect = new RingModulatorEffectLwjgl3((RingModulatorData) effectData);
+        } else if(effectType == EffectType.VOCAL_MORPHER) {
+            effect = new VocalMorpherEffectLwjgl3((VocalMorpherData) effectData);
         } else {
             effect = null;
         }

@@ -1,7 +1,6 @@
 package com.rafaskoberg.boom.effect;
 
 import com.rafaskoberg.boom.BoomEffectLwjgl3;
-import com.rafaskoberg.boom.effect.distortion.DistortionData;
 
 import static org.lwjgl.openal.EXTEfx.*;
 

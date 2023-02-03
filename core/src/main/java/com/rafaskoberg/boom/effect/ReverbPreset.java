@@ -1,6 +1,4 @@
-package com.rafaskoberg.boom.effect.reverb;
-
-import com.rafaskoberg.boom.effect.BoomEffectPreset;
+package com.rafaskoberg.boom.effect;
 
 /**
  * Simulates a reverberation effect, which occurs when a sound hits any hard surface and reflects back to the listener at varying times and

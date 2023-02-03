@@ -1,8 +1,14 @@
 package com.rafaskoberg.boom.effect;
 
 public enum EffectType {
+    AUTO_WAH,
+    CHORUS,
+    COMPRESSOR,
     DISTORTION,
     ECHO,
+    FLANGER,
+    PITCH_SHIFTER,
     REVERB,
-    PITCH_SHIFTER;
+    RING_MODULATOR,
+    VOCAL_MORPHER;
 }

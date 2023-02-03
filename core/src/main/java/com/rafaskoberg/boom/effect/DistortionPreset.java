@@ -1,6 +1,4 @@
-package com.rafaskoberg.boom.effect.distortion;
-
-import com.rafaskoberg.boom.effect.BoomEffectPreset;
+package com.rafaskoberg.boom.effect;
 
 /**
  * The distortion effect simulates turning up (overdriving) the gain stage on a guitar amplifier or adding a distortion pedal to an

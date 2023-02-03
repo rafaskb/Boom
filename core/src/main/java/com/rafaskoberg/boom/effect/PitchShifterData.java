@@ -1,4 +1,4 @@
-package com.rafaskoberg.boom.effect.pitchshifter;
+package com.rafaskoberg.boom.effect;
 
 import com.rafaskoberg.boom.effect.BoomEffectData;
 import com.rafaskoberg.boom.effect.EffectType;

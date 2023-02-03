@@ -1,7 +1,4 @@
-package com.rafaskoberg.boom.effect.echo;
-
-import com.rafaskoberg.boom.effect.BoomEffectData;
-import com.rafaskoberg.boom.effect.EffectType;
+package com.rafaskoberg.boom.effect;
 
 /**
  * The echo effect generates discrete, delayed instances of the input signal. The amount of delay and feedback is controllable. The delay is
