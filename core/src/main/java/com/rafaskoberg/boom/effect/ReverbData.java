@@ -10,63 +10,73 @@ public class ReverbData implements BoomEffectData {
     /**
      * Controls the coloration of the late reverb
      * <p>
-     * Value range: (0; 1]
+     * Value range: (0; 1] Default: 1.00
      */
-    public float density;
+    public float density = 1;
+
     /**
      * Controls the echo density when the reverb is decaying
      * <p>
-     * Value range: [0; 1]
+     * Value range: [0; 1] Default: 1.00
      */
-    public float diffusion;
+    public float diffusion = 1;
+
     /**
      * Controls the reflected sound that the reverb adds to all sound sources attached to.
      * <p>
-     * Value range [0; 1] Default: 0.89
+     * Value range [0; 1] Default: 0.32
      */
-    public float gain;
+    public float gain = 0.32f;
+
     /**
      * Controls the reflected sound at high frequences
      * <p>
-     * Value range: [0; 1] Default: 0.0
+     * Value range: [0; 1] Default: 0.89
      */
-    public float gainHF;
+    public float gainHF = 0.89f;
+
     /**
      * Controls the reflected sound at low frequences
      * <p>
      * Value range: [0; 1] Default: 0.0
      */
-    public float gainLF;
+    public float gainLF = 0.0f;
+
     /**
      * Controls reverb decay time. (similiar to echo) Ranges from 0.1 (suitable for very small room) to 20.0 (large room)
      * <p>
      * Value range: [0.1; 20] Default: 1.49 (seconds)
      */
-    public float decayTime;
+    public float decayTime = 1.49f;
+
     /**
      * Adjusts the spectral quality of the [decayTime] in high frequencies.
      * <p>
      * Value range: (0; 20.0] Default: 0.83
      */
-    public float decayHFRatio;
+    public float decayHFRatio = 0.83f;
+
     /**
      * Adjusts the spectral quality of the [decayTime] in low frequencies.
      * <p>
      * Value range: (0; 20.0] Default: 0.83
      */
-    public float decayLFRatio;
+    public float decayLFRatio = 0.83f;
+
     /**
      * Overall amount of the initial reflections relative to [gain]
      * <p>
      * Value range: [0, 3.16] (from -100dB to +10dB) Default: 0.05
      */
-    public float reflectionsGain;
+    public float reflectionsGain = 0.05f;
+
     /**
      * Delay between the arrival time of the direct path from the source to the first from the source.
      * <p>
-     * Value range: [0; 0.3] (0 to 300 milliseconds)
+     * Value range: [0; 0.3] (0 to 300 milliseconds) Default: 0.007
      */
-    public float reflectionsDelay;
+    public float reflectionsDelay = 0.007f;
+
     /**
      * 3D vector that controls the spatial distribution of the cluster of early reflections. The direction of this vector controls the
      * global direction of the reflections, while its magnitude controls how focused the reflections are towards this direction.
@@ -77,64 +87,74 @@ public class ReverbData implements BoomEffectData {
      * <p>
      * Value range: [-1,-1,-1; 1,1,1] Default: [0,0,0]
      */
-    public float[] reflectionsPan;
+    public float[] reflectionsPan = {0, 0, 0};
+
     /**
      * Controls the overall amount of LATE (not initial) reverb relative to the [gain]
      * <p>
      * Value range: [0; 10.0] Default: 1.26
      */
-    public float lateReverbGain;
+    public float lateReverbGain = 1.26f;
+
     /**
      * Defines the starting time of the late reverb relative to the time of the initial reflection
      * <p>
      * Value range: [0.0; 0.1] Default: 0.011
      */
-    public float lateReverbDelay;
+    public float lateReverbDelay = 0.011f;
+
     /**
      * 3D vector that controls the spatial distribution of the late reverb. The direction of this vector controls the global direction of
      * the reverb, while its magnitude controls how focused the reverb are towards this direction.
      * <p>
      * Value range: [-1,-1,-1; 1,1,1] Default: [0,0,0]
      */
-    public float[] lateReverbPan;
+    public float[] lateReverbPan = {0, 0, 0};
+
     /**
      * Controls the rate at which the cyclic echo repeats itself along the reverberation decay.
      * <p>
      * Value range: [0.075; 0.25] Default: 0.25 (seconds)
      */
-    public float echoTime;
+    public float echoTime = 0.25f;
+
     /**
      * Introduces a cyclic echo in the reverberation decay, which will be noticeable with transient or percussive sounds. A larger value
      * will make this effect more prominent.
      * <p>
      * Value range: [0; 1] Default: 0
      */
-    public float echoDepth;
+    public float echoDepth = 0f;
+
     /**
      * Controls the speed of the vibrato (rate of periodic changes in pitch).
      * <p>
      * Value range: [0.04; 4] Default: 0.25 (seconds)
      */
-    public float modulationTime;
+    public float modulationTime = 0.25f;
+
     /**
      * Controls the amount of pitch change. Low values will contribute to reinforcing the perceived effect by reducing the mixing of
      * overlapping reflections in the reverberation decay.
      * <p>
      * Value range: [0; 1] Default: 0
      */
-    public float modulationDepth;
+    public float modulationDepth = 0;
+
     /**
      * Controls the distance-dependent attenuation at high frequencies caused by the propagation minimum
      * <p>
      * Value range: [0.892; 1.0] Default: 0.994
      */
-    public float airAbsorptionGainHF;
+    public float airAbsorptionGainHF = 0.994f;
+
     /**
      * Determine the frequencies at which the high-frequency effects created by this Reverb properties are measured.
      * <p>
      * Value range: [1000; 20000] Default: 5000
      */
-    public float hfReference;
+    public float hfReference = 5000f;
+
     /**
      * Determine the frequencies at which the low-frequency effects created by this Reverb properties are measured.
      * <p>
@@ -142,13 +162,15 @@ public class ReverbData implements BoomEffectData {
      * <p>
      * Value range: [20; 1000] Default: 250
      */
-    public float lfReference;
+    public float lfReference = 250;
+
     /**
      * Attenuates the reflected sound
      * <p>
      * Value range: [0.0; 10.0] Default: 0.0
      */
-    public float roomRolloffFactor;
+    public float roomRolloffFactor = 0;
+
     /**
      * When this flag is set, the high-frequency decay time automatically stays below a limit value that’s derived from the setting of the
      * property Air Absorption Gain HF. This limit applies regardless of the setting of the property Decay HF Ratio, and the limit doesn’t
@@ -158,7 +180,7 @@ public class ReverbData implements BoomEffectData {
      * <p>
      * Value range: [0; 1] Default: 1
      */
-    public int decayHFLimit;
+    public int decayHFLimit = 1;
 
     public ReverbData() {
     }
