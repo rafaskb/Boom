@@ -8,3 +8,4 @@
 - Volume, pitch, and pan values are now clamped to a safe and functional range in Boom.play and Boom.loop methods to avoid a cascade of OpenAL errors.
 - Added updateSoundToChannel method that updates a Sound ID with the current state of the given channel. Must be called manually.
 - Updated libGDX from 1.9.11 to 1.11.0.
+- Created example app.

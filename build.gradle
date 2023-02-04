@@ -1,26 +1,21 @@
 buildscript {
     repositories {
         mavenCentral()
-        mavenLocal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
 }
 
 apply plugin: 'java-library'
 
-sourceCompatibility = 1.8
-
-def projectName = 'boom'
-def projectDescription = 'LibGDX extension that brings special effects to audio.'
-version '0.0.2-SNAPSHOT'
-group 'com.rafaskoberg.gdx'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 // Disable JDK 8's doclint
 // http://blog.joda.org/2014/02/turning-off-doclint-in-jdk-8-javadoc.html
 if (JavaVersion.current().isJava8Compatible()) {
     allprojects {
         tasks.withType(Javadoc) {
-            // The -quiet is because of some sort of weird JDK JavaCompiler bug: https://discuss.gradle.org/t/passing-arguments-to-compiler-and-javadoc/1661
+            // The -quiet is because of some sort of weird JDK JavaCompiler bug:
+            // https://discuss.gradle.org/t/passing-arguments-to-compiler-and-javadoc/1661
             options.addStringOption('Xdoclint:all,-missing', '-quiet')
         }
     }
@@ -36,7 +31,12 @@ allprojects {
     sourceSets.test.java.srcDirs = ["src/test/java"]
 
     ext {
+        projectName = 'boom'
+        projectVersion = '0.0.2-SNAPSHOT'
+        projectDescription = 'libGDX extension that brings special effects to audio.'
+
         gdxVersion = '1.11.0'
+        visUiVersion = '1.5.1'
     }
 
     repositories {
@@ -44,6 +44,7 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -59,5 +60,15 @@ project(":lwjgl3") {
         api group: 'com.badlogicgames.gdx', name: 'gdx-backend-lwjgl3', version: gdxVersion
         api group: 'com.badlogicgames.gdx', name: 'gdx-platform', version: gdxVersion, classifier: 'natives-desktop'
         api group: 'com.badlogicgames.gdx', name: 'gdx', version: gdxVersion
+    }
+}
+
+project(":example") {
+    dependencies {
+        api project(":lwjgl3")
+        implementation group: 'com.badlogicgames.gdx', name: 'gdx', version: gdxVersion
+        implementation group: 'com.badlogicgames.gdx', name: 'gdx-backend-lwjgl3', version: gdxVersion
+        implementation group: 'com.badlogicgames.gdx', name: 'gdx-platform', version: gdxVersion, classifier: 'natives-desktop'
+        implementation group: 'com.kotcrab.vis', name: 'vis-ui', version: visUiVersion
     }
 }

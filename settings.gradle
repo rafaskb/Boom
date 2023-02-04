@@ -2,4 +2,5 @@ rootProject.name = 'boom'
 
 include 'lwjgl3'
 include 'core'
+include 'example'
 
