@@ -1,4 +1,4 @@
-[SNAPSHOT]
+[1.0.0] (February 2023)
 - BREAKING: Added generic methods "addEffect" to BoomChannel, and removed specialized ones such as "addReverb".
 - BREAKING: Removed sourceGain and sourceCutoff from BoomChannel in favor of the new Filter class, which has the same functionality and some more.
 - Added Filters to channels and effects, which are created automatically in both cases.

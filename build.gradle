@@ -32,7 +32,7 @@ allprojects {
 
     ext {
         projectName = 'boom'
-        projectVersion = '0.0.2-SNAPSHOT'
+        projectVersion = '1.0.0'
         projectDescription = 'libGDX extension that brings special effects to audio.'
 
         gdxVersion = '1.11.0'
