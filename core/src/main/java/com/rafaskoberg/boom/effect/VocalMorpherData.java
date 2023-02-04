@@ -15,7 +15,7 @@ public class VocalMorpherData implements BoomEffectData {
     public int phonemea = 0;
 
     /**
-     * Range: 0 - 29, Default: 0<br> If both parameters are set to the same phoneme, that determines the filtering effect that will be
+     * Range: 0 - 29, Default: 10<br> If both parameters are set to the same phoneme, that determines the filtering effect that will be
      * heard. If these two parameters are set to different phonemes, the filtering effect will morph between the two settings at a rate
      * specified by AL_VOCAL_MORPHER_RATE.
      */
