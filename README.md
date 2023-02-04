@@ -66,9 +66,9 @@ Every channel and effect contains a Bandpass Filter, which allows you to control
 myBoomChannel.getFilter().setLowPass(0.3f);
 
 // Effect filter
-    BoomEffect reverbEffect=myBoomChannel.addEffect(ReverbPreset.AUDITORIUM);
-    reverbEffect.getFilter().setGain(0.5f);
-    reverbEffect.getFilter().setHighPass(0.15f);
+BoomEffect reverbEffect=myBoomChannel.addEffect(ReverbPreset.AUDITORIUM);
+reverbEffect.getFilter().setGain(0.5f);
+reverbEffect.getFilter().setHighPass(0.15f);
 ```
 
 ## Example App
@@ -143,7 +143,6 @@ public class MyGame extends Game {
 
         // Add some effects to it
         myChannel.addEffect(ReverbPreset.AUDITORIUM); // Adds a Reverb effect through a preset
-        myChannel.addEffect(DistortionPreset.SOFT); // Adds a Distortion effect through a preset
         myChannel.addEffect(new EchoData()); // Adds a Echo effect using the default values
 
         // Change the channel's filter just because you can
