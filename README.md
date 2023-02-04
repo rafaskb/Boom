@@ -8,7 +8,7 @@ Made exclusively for the **lwjgl3** backend, Boom unleashes the power of OpenAL 
 
 Watch the video to listen to its features:
 
-[![Boom Example](.edia/video_preview.png)](https://youtu.be/GJjAHdrO-5A "Boom Example")
+[![Boom Example](media/video_preview.png)](https://youtu.be/GJjAHdrO-5A "Boom Example")
 
 ## Contents
 
