@@ -1,6 +1,6 @@
-# Boom
+# Boom 💥
 
-Boom is a libGDX audio extension that brings special effects to your game. 💥
+Boom is a libGDX audio extension that brings special effects to your game.
 
 Ever wished you could apply effects to your sounds such as reverb and echo, low pass filters, or even distortion with a robotic voice effect? That's what Boom does!
 
