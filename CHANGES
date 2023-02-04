@@ -9,3 +9,10 @@
 - Added updateSoundToChannel method that updates a Sound ID with the current state of the given channel. Must be called manually.
 - Updated libGDX from 1.9.11 to 1.11.0.
 - Created example app.
+
+[0.0.2] (August 2020)
+- Updated libGDX from 1.9.9 to 1.9.11.
+- Fixed a reflection issue.
+
+[0.0.1] (April 2020)
+- First prototype release.
