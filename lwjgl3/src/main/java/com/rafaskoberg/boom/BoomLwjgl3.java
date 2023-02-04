@@ -68,7 +68,7 @@ public class BoomLwjgl3 extends Boom {
 
             // Update channel effects
             int id = entry.value;
-            postPlay(sourceId, (BoomChannelLwjgl3) getChannel(id));
+            applyChannelToSourceId(sourceId, (BoomChannelLwjgl3) getChannel(id));
         }
     }
 
@@ -102,7 +102,7 @@ public class BoomLwjgl3 extends Boom {
         long soundId = sound == null ? -1 : sound.play(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
-            if(!postPlay(sourceId, (BoomChannelLwjgl3) channel)) {
+            if(!applyChannelToSourceId(sourceId, (BoomChannelLwjgl3) channel)) {
                 return -1;
             }
         }
@@ -120,7 +120,7 @@ public class BoomLwjgl3 extends Boom {
         long soundId = sound == null ? -1 : sound.loop(volume, pitch, pan);
         int sourceId = getSourceId(soundId);
         if(sourceId != -1) {
-            if(!postPlay(sourceId, (BoomChannelLwjgl3) channel)) {
+            if(!applyChannelToSourceId(sourceId, (BoomChannelLwjgl3) channel)) {
                 return -1;
             }
         }
@@ -141,12 +141,20 @@ public class BoomLwjgl3 extends Boom {
             int sourceId = ((OpenALMusic) music).getSourceId();
             if(sourceId != -1) {
                 musicChannels.put(music, channel == null ? -1 : channel.getId());
-                postPlay(sourceId, (BoomChannelLwjgl3) channel);
+                applyChannelToSourceId(sourceId, (BoomChannelLwjgl3) channel);
             }
         }
     }
 
-    private boolean postPlay(int sourceId, BoomChannelLwjgl3 channel) {
+    @Override
+    public void updateSoundToChannel(long soundId, BoomChannel channel) {
+        int sourceId = getSourceId(soundId);
+        if(sourceId != -1) {
+            applyChannelToSourceId(sourceId, (BoomChannelLwjgl3) channel);
+        }
+    }
+
+    private boolean applyChannelToSourceId(int sourceId, BoomChannelLwjgl3 channel) {
         if(sourceId != -1) {
 
             // If channel is null, reset audio source

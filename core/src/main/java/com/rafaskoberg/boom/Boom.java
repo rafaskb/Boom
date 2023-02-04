@@ -260,4 +260,28 @@ public abstract class Boom {
      * @param channel Channel this music should be played through.
      */
     public abstract void changeMusicChannel(Music music, BoomChannel channel);
+
+    /**
+     * Updates all the parameters of a specific SoundID to match the given channel. This can be used to change the channel of a certain
+     * sound, or update the sound if the channel or its effects have been changed.
+     * <p>
+     * Note that this process happens automatically for music, but it must be done manually for sounds.
+     *
+     * @param soundId   Music to have its channel changed.
+     * @param channelId The ID of the channel this sound should be updated against.
+     */
+    public final void updateSoundToChannel(long soundId, int channelId) {
+        updateSoundToChannel(soundId, getChannel(channelId));
+    }
+
+    /**
+     * Updates all the parameters of a specific SoundID to match the given channel. This can be used to change the channel of a certain
+     * sound, or update the sound if the channel or its effects have been changed.
+     * <p>
+     * Note that this process happens automatically for music, but it must be done manually for sounds.
+     *
+     * @param soundId Music to have its channel changed.
+     * @param channel Channel this sound should be updated against.
+     */
+    public abstract void updateSoundToChannel(long soundId, BoomChannel channel);
 }
