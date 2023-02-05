@@ -23,6 +23,7 @@ import com.kotcrab.vis.ui.widget.VisSlider;
 import com.rafaskoberg.boom.Boom;
 import com.rafaskoberg.boom.BoomChannel;
 import com.rafaskoberg.boom.effect.AutoWahData;
+import com.rafaskoberg.boom.effect.AutoWahPreset;
 import com.rafaskoberg.boom.effect.BoomEffect;
 import com.rafaskoberg.boom.effect.BoomEffectData;
 import com.rafaskoberg.boom.effect.BoomEffectPreset;
@@ -43,6 +44,7 @@ import com.rafaskoberg.boom.effect.ReverbPreset;
 import com.rafaskoberg.boom.effect.RingModulatorData;
 import com.rafaskoberg.boom.effect.RingModulatorPreset;
 import com.rafaskoberg.boom.effect.VocalMorpherData;
+import com.rafaskoberg.boom.effect.VocalMorpherPreset;
 import com.rafaskoberg.gdx.boom.example.util.Utils;
 
 import java.util.function.Consumer;
@@ -525,7 +527,7 @@ public class EffectExplorer extends ApplicationAdapter {
         // Get preset values
         BoomEffectPreset[] presetValues;
         if(currentEffect == EffectType.AUTO_WAH) {
-            presetValues = null;
+            presetValues = AutoWahPreset.values();
         } else if(currentEffect == EffectType.CHORUS) {
             presetValues = ChorusPreset.values();
         } else if(currentEffect == EffectType.COMPRESSOR) {
@@ -543,7 +545,7 @@ public class EffectExplorer extends ApplicationAdapter {
         } else if(currentEffect == EffectType.RING_MODULATOR) {
             presetValues = RingModulatorPreset.values();
         } else if(currentEffect == EffectType.VOCAL_MORPHER) {
-            presetValues = null;
+            presetValues = VocalMorpherPreset.values();
         } else {
             presetValues = null;
         }

@@ -9,6 +9,8 @@ public enum FlangerPreset implements BoomEffectPreset {
     // ===========================
     // ===   Default Presets   ===
     // ===========================
+    FRIGHTENED(new FlangerData(0, -180, 9.1f, 1, -0.64f, 0.0022f)),
+    MIC_FEEDBACK(new FlangerData(1, -138, 8.3f, 1, -0.98f, 0.0003f)),
     ROBOT_HIGH(new FlangerData(1, 180, 2f, 0.5f, 0.9f, 0.002f)),
     ROBOT_LOW(new FlangerData(1, 180, 2f, 0.5f, 0.9f, 0.004f)),
     ROBOT_METALLIC(new FlangerData(1, 180, 2f, 0.5f, -0.95f, 0.004f)),

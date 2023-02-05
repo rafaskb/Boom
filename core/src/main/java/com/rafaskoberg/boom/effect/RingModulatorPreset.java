@@ -11,6 +11,7 @@ public enum RingModulatorPreset implements BoomEffectPreset {
     TREMOLO(new RingModulatorData(3.5f, 0, 0)),
     SLOW_TREMOLO(new RingModulatorData(1.5f, 0, 0)),
     FAST_TREMOLO(new RingModulatorData(5f, 0, 0)),
+    ODD_ROBOT_IN_C(new RingModulatorData(1760, 800, 0)),
     ;
 
     // Internal

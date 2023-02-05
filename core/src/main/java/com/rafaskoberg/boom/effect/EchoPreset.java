@@ -11,7 +11,7 @@ public enum EchoPreset implements BoomEffectPreset {
     // ===========================
     VERY_FAR_AWAY(new EchoData(0.207f, 0.404f, 0.6f, 0.7f, 0f)),
     FAR_AWAY(new EchoData(0.207f, 0.404f, 0.5f, 0.5f, 0f)),
-    PING_PONG_LEFT(new EchoData(0.05f, 0.1f, 0.1f, 0.8f, 1f)),
+    PING_PONG_LEFT(new EchoData(0.05f, 0.1f, 0.1f, 0.8f, -1f)),
     PING_PONG_RIGHT(new EchoData(0.05f, 0.1f, 0.1f, 0.8f, 1f)),
     PING_PONG_CENTER(new EchoData(0.05f, 0.1f, 0.1f, 0.8f, 0f)),
     DOPPELGANGER(new EchoData(0.1f, 0.1f, 0.4f, 0.5f, 0.2f)),

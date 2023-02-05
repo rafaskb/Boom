@@ -17,6 +17,7 @@ public enum DistortionPreset implements BoomEffectPreset {
     GENERIC(new DistortionData(0.5f, 1.0f, 8000f, 3600f, 3600f)),
     RUMBLE(new DistortionData(0.7f, 1.0f, 8000f, 3600f, 3600f)),
     CRUSHER(new DistortionData(1.0f, 1.0f, 8000f, 3600f, 3600f)),
+    BAD_RADIO(new DistortionData(1.0f, 0.6f, 1435, 718, 2870)),
     ;
 
     // Internal
