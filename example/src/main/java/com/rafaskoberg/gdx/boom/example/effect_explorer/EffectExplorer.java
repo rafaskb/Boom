@@ -40,6 +40,7 @@ import com.rafaskoberg.gdx.boom.example.util.Utils;
 import java.util.function.Consumer;
 
 public class EffectExplorer extends ApplicationAdapter {
+    private static final float SLIDER_LABEL_WIDTH = 250f;
 
     public Boom boom;
     private BoomChannel boomChannel;
@@ -332,10 +333,10 @@ public class EffectExplorer extends ApplicationAdapter {
 
         // Create table
         Table table = new Table();
-        table.defaults().pad(0, 10, 0, 10).uniform().center();
-        table.add(nameLabel);
-        table.add(slider);
-        table.add(valueLabel);
+        table.defaults().pad(0, 10, 0, 10).center();
+        table.add(nameLabel).width(SLIDER_LABEL_WIDTH);
+        table.add(slider).growX();
+        table.add(valueLabel).width(SLIDER_LABEL_WIDTH);
 
         return table;
     }
@@ -373,10 +374,10 @@ public class EffectExplorer extends ApplicationAdapter {
 
         // Create table
         Table table = new Table();
-        table.defaults().pad(0, 10, 0, 10).uniform().center();
-        table.add(nameLabel);
-        table.add(slider);
-        table.add(valueLabel);
+        table.defaults().pad(0, 10, 0, 10).center();
+        table.add(nameLabel).width(SLIDER_LABEL_WIDTH);
+        table.add(slider).growX();
+        table.add(valueLabel).width(SLIDER_LABEL_WIDTH);
 
         return table;
     }
