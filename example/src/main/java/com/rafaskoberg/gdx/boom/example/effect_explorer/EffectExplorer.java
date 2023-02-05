@@ -25,15 +25,23 @@ import com.rafaskoberg.boom.BoomChannel;
 import com.rafaskoberg.boom.effect.AutoWahData;
 import com.rafaskoberg.boom.effect.BoomEffect;
 import com.rafaskoberg.boom.effect.BoomEffectData;
+import com.rafaskoberg.boom.effect.BoomEffectPreset;
 import com.rafaskoberg.boom.effect.ChorusData;
+import com.rafaskoberg.boom.effect.ChorusPreset;
 import com.rafaskoberg.boom.effect.CompressorData;
 import com.rafaskoberg.boom.effect.DistortionData;
+import com.rafaskoberg.boom.effect.DistortionPreset;
 import com.rafaskoberg.boom.effect.EchoData;
+import com.rafaskoberg.boom.effect.EchoPreset;
 import com.rafaskoberg.boom.effect.EffectType;
 import com.rafaskoberg.boom.effect.FlangerData;
+import com.rafaskoberg.boom.effect.FlangerPreset;
 import com.rafaskoberg.boom.effect.PitchShifterData;
+import com.rafaskoberg.boom.effect.PitchShifterPreset;
 import com.rafaskoberg.boom.effect.ReverbData;
+import com.rafaskoberg.boom.effect.ReverbPreset;
 import com.rafaskoberg.boom.effect.RingModulatorData;
+import com.rafaskoberg.boom.effect.RingModulatorPreset;
 import com.rafaskoberg.boom.effect.VocalMorpherData;
 import com.rafaskoberg.gdx.boom.example.util.Utils;
 
@@ -47,6 +55,8 @@ public class EffectExplorer extends ApplicationAdapter {
     private EffectType currentEffect;
     private BoomEffect boomEffect;
     private BoomEffectData boomEffectData;
+    private BoomEffectPreset currentPreset;
+    private int currentPresetIndex;
     private Stage stage;
     private Sound voiceSound;
     public Sound uiClickSound;
@@ -55,6 +65,7 @@ public class EffectExplorer extends ApplicationAdapter {
     private boolean isVoicePlaying;
     private long voiceSoundId;
     private VisLabel effectLabel;
+    private VisLabel presetLabel;
     private Container<Table> container;
 
     @Override
@@ -101,6 +112,10 @@ public class EffectExplorer extends ApplicationAdapter {
         Table effectSelector = createEffectSelector();
         effectSelector.pack();
 
+        // Preset selector
+        Table presetSelector = createPresetSelector();
+        effectSelector.pack();
+
         // Container
         container = new Container<>();
         container.fill();
@@ -108,7 +123,8 @@ public class EffectExplorer extends ApplicationAdapter {
         // Build widget
         rootTable.add(audioWidget).growX().row();
         rootTable.add(effectSelector).growX().row();
-        rootTable.add(container).grow();
+        rootTable.add(container).grow().row();
+        rootTable.add(presetSelector).growX();
     }
 
     private Table createAudioWidget() {
@@ -228,6 +244,47 @@ public class EffectExplorer extends ApplicationAdapter {
         return table;
     }
 
+    private Table createPresetSelector() {
+        Table table = new Table();
+
+        // Previous button
+        VisImageButton previousButton = new VisImageButton(Utils.createModernButtonStyle(Utils.loadImageDrawable("previous")));
+        Utils.addSoundToButton(previousButton, boom, uiClickSound);
+        previousButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                onPresetButton(false);
+            }
+        });
+
+        // Next button
+        VisImageButton nextButton = new VisImageButton(Utils.createModernButtonStyle(Utils.loadImageDrawable("next")));
+        Utils.addSoundToButton(nextButton, boom, uiClickSound);
+        nextButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                onPresetButton(true);
+            }
+        });
+
+        // Preset Label
+        presetLabel = new VisLabel("", "small-font", "t-white");
+        presetLabel.setAlignment(Align.center);
+
+        // Configure widget
+        table.background(Utils.createColorDrawable(VisUI.getSkin().getColor("t-dark"), 0.5f));
+        table.pad(5);
+        table.defaults().uniformX().expand();
+
+        // Populate widget
+        table.defaults().pad(5).space(0, 10, 0, 10).center().expandY();
+        table.add(previousButton).uniformX();
+        table.add(presetLabel).grow();
+        table.add(nextButton).uniformX();
+
+        return table;
+    }
+
     private Table createEffectTable(EffectType effectType) {
         Table table = new Table();
         table.defaults().growX().top().pad(10).uniformY();
@@ -239,64 +296,72 @@ public class EffectExplorer extends ApplicationAdapter {
         table.add().row();
 
         if(effectType == EffectType.AUTO_WAH) {
-            table.add(createSlider("attackTime", 0.0001f, 1f, 0.06f, 4, (value) -> ((AutoWahData) boomEffectData).attackTime = value)).row();
-            table.add(createSlider("releaseTime", 0.0001f, 1f, 0.06f, 4, (value) -> ((AutoWahData) boomEffectData).releaseTime = value)).row();
-            table.add(createSlider("resonance", 2f, 1000f, 1000f, 0, (value) -> ((AutoWahData) boomEffectData).resonance = value)).row();
-            table.add(createSlider("peakGain", 0.00003f, 31621f, 11.22f, 2, (value) -> ((AutoWahData) boomEffectData).peakGain = value)).row();
+            AutoWahData thisData = (AutoWahData) boomEffectData;
+            table.add(createSlider("attackTime", 0.0001f, 1f, thisData.attackTime, 4, (value) -> thisData.attackTime = value)).row();
+            table.add(createSlider("releaseTime", 0.0001f, 1f, thisData.releaseTime, 4, (value) -> thisData.releaseTime = value)).row();
+            table.add(createSlider("resonance", 2f, 1000f, thisData.resonance, 0, (value) -> thisData.resonance = value)).row();
+            table.add(createSlider("peakGain", 0.00003f, 31621f, thisData.peakGain, 2, (value) -> thisData.peakGain = value)).row();
         }
 
         if(effectType == EffectType.CHORUS) {
-            table.add(createSlider("waveForm", 0, 1, 1, (value) -> ((ChorusData) boomEffectData).waveForm = value)).row();
-            table.add(createSlider("phase", -180, 180, 90, (value) -> ((ChorusData) boomEffectData).phase = value)).row();
-            table.add(createSlider("rate", 0, 10, 1.1f, 2, (value) -> ((ChorusData) boomEffectData).rate = value)).row();
-            table.add(createSlider("depth", 0, 1, 0.1f, 2, (value) -> ((ChorusData) boomEffectData).depth = value)).row();
-            table.add(createSlider("feedback", -1, 1, 0.25f, 2, (value) -> ((ChorusData) boomEffectData).feedback = value)).row();
-            table.add(createSlider("delay", 0, 0.016f, 0.016f, 4, (value) -> ((ChorusData) boomEffectData).delay = value)).row();
+            ChorusData thisData = (ChorusData) boomEffectData;
+            table.add(createSlider("waveForm", 0, 1, thisData.waveForm, (value) -> thisData.waveForm = value)).row();
+            table.add(createSlider("phase", -180, 180, thisData.phase, (value) -> thisData.phase = value)).row();
+            table.add(createSlider("rate", 0, 10, thisData.rate, 2, (value) -> thisData.rate = value)).row();
+            table.add(createSlider("depth", 0, 1, thisData.depth, 2, (value) -> thisData.depth = value)).row();
+            table.add(createSlider("feedback", -1, 1, thisData.feedback, 2, (value) -> thisData.feedback = value)).row();
+            table.add(createSlider("delay", 0, 0.016f, thisData.delay, 4, (value) -> thisData.delay = value)).row();
         }
 
         if(effectType == EffectType.DISTORTION) {
-            table.add(createSlider("edge", 0f, 1f, 0.2f, 2, (value) -> ((DistortionData) boomEffectData).edge = value)).row();
-            table.add(createSlider("gain", 0.01f, 1f, 0.05f, 2, (value) -> ((DistortionData) boomEffectData).gain = value)).row();
-            table.add(createSlider("lowPassCutoff", 80, 24000, 8000, 0, (value) -> ((DistortionData) boomEffectData).lowPassCutoff = value)).row();
-            table.add(createSlider("eqCenter", 80, 24000, 3600, 0, (value) -> ((DistortionData) boomEffectData).eqCenter = value)).row();
-            table.add(createSlider("eqBandwidth", 80, 24000, 3600, 0, (value) -> ((DistortionData) boomEffectData).eqBandwidth = value)).row();
+            DistortionData thisData = (DistortionData) boomEffectData;
+            table.add(createSlider("edge", 0f, 1f, thisData.edge, 2, (value) -> thisData.edge = value)).row();
+            table.add(createSlider("gain", 0.01f, 1f, thisData.gain, 2, (value) -> thisData.gain = value)).row();
+            table.add(createSlider("lowPassCutoff", 80, 24000, thisData.lowPassCutoff, 0, (value) -> thisData.lowPassCutoff = value)).row();
+            table.add(createSlider("eqCenter", 80, 24000, thisData.eqCenter, 0, (value) -> thisData.eqCenter = value)).row();
+            table.add(createSlider("eqBandwidth", 80, 24000, thisData.eqBandwidth, 0, (value) -> thisData.eqBandwidth = value)).row();
         }
 
         if(effectType == EffectType.ECHO) {
-            table.add(createSlider("delay", 0, 0.207f, 0.1f, 3, (value) -> ((EchoData) boomEffectData).delay = value)).row();
-            table.add(createSlider("lrdelay", 0, 0.404f, 0.1f, 3, (value) -> ((EchoData) boomEffectData).lrdelay = value)).row();
-            table.add(createSlider("damping", 0, 0.99f, 0.5f, 2, (value) -> ((EchoData) boomEffectData).damping = value)).row();
-            table.add(createSlider("feedback", 0, 1f, 0.5f, 2, (value) -> ((EchoData) boomEffectData).feedback = value)).row();
-            table.add(createSlider("spread", -1f, 1f, -1, 2, (value) -> ((EchoData) boomEffectData).spread = value)).row();
+            EchoData thisData = (EchoData) boomEffectData;
+            table.add(createSlider("delay", 0, 0.207f, thisData.delay, 3, (value) -> thisData.delay = value)).row();
+            table.add(createSlider("lrdelay", 0, 0.404f, thisData.lrdelay, 3, (value) -> thisData.lrdelay = value)).row();
+            table.add(createSlider("damping", 0, 0.99f, thisData.damping, 2, (value) -> thisData.damping = value)).row();
+            table.add(createSlider("feedback", 0, 1f, thisData.feedback, 2, (value) -> thisData.feedback = value)).row();
+            table.add(createSlider("spread", -1f, 1f, thisData.spread, 2, (value) -> thisData.spread = value)).row();
         }
 
         if(effectType == EffectType.FLANGER) {
-            table.add(createSlider("waveform", 0, 1, 1, (value) -> ((FlangerData) boomEffectData).waveform = value)).row();
-            table.add(createSlider("phase", -180, 180, 0, (value) -> ((FlangerData) boomEffectData).phase = value)).row();
-            table.add(createSlider("rate", 0, 10, 0.27f, 2, (value) -> ((FlangerData) boomEffectData).rate = value)).row();
-            table.add(createSlider("depth", 0, 1, 1, 2, (value) -> ((FlangerData) boomEffectData).depth = value)).row();
-            table.add(createSlider("feedback", -1, 1, -0.5f, 2, (value) -> ((FlangerData) boomEffectData).feedback = value)).row();
-            table.add(createSlider("delay", 0, 0.004f, 0.002f, 4, (value) -> ((FlangerData) boomEffectData).delay = value)).row();
+            FlangerData thisData = (FlangerData) boomEffectData;
+            table.add(createSlider("waveform", 0, 1, thisData.waveform, (value) -> thisData.waveform = value)).row();
+            table.add(createSlider("phase", -180, 180, thisData.phase, (value) -> thisData.phase = value)).row();
+            table.add(createSlider("rate", 0, 10, thisData.rate, 2, (value) -> thisData.rate = value)).row();
+            table.add(createSlider("depth", 0, 1, thisData.depth, 2, (value) -> thisData.depth = value)).row();
+            table.add(createSlider("feedback", -1, 1, thisData.feedback, 2, (value) -> thisData.feedback = value)).row();
+            table.add(createSlider("delay", 0, 0.004f, thisData.delay, 4, (value) -> thisData.delay = value)).row();
         }
 
         if(effectType == EffectType.PITCH_SHIFTER) {
-            table.add(createSlider("coarseTune", -12, 12, 12, (value) -> ((PitchShifterData) boomEffectData).coarseTune = value)).row();
-            table.add(createSlider("fineTune", -50, 50, 0, (value) -> ((PitchShifterData) boomEffectData).fineTune = value)).row();
+            PitchShifterData thisData = (PitchShifterData) boomEffectData;
+            table.add(createSlider("coarseTune", -12, 12, thisData.coarseTune, (value) -> thisData.coarseTune = value)).row();
+            table.add(createSlider("fineTune", -50, 50, thisData.fineTune, (value) -> thisData.fineTune = value)).row();
         }
 
         if(effectType == EffectType.RING_MODULATOR) {
-            table.add(createSlider("frequency", 0, 8000, 440, 2, (value) -> ((RingModulatorData) boomEffectData).frequency = value)).row();
-            table.add(createSlider("highpassCutoff", 0, 24000, 800, 0, (value) -> ((RingModulatorData) boomEffectData).highpassCutoff = value)).row();
-            table.add(createSlider("waveform", 0, 2, 0, (value) -> ((RingModulatorData) boomEffectData).waveform = value)).row();
+            RingModulatorData thisData = (RingModulatorData) boomEffectData;
+            table.add(createSlider("frequency", 0, 8000, thisData.frequency, 2, (value) -> thisData.frequency = value)).row();
+            table.add(createSlider("highpassCutoff", 0, 24000, thisData.highpassCutoff, 0, (value) -> thisData.highpassCutoff = value)).row();
+            table.add(createSlider("waveform", 0, 2, thisData.waveform, (value) -> thisData.waveform = value)).row();
         }
 
         if(effectType == EffectType.VOCAL_MORPHER) {
-            table.add(createSlider("phonemea", 0, 29, 0, (value) -> ((VocalMorpherData) boomEffectData).phonemea = value)).row();
-            table.add(createSlider("phonemeb", 0, 29, 0, (value) -> ((VocalMorpherData) boomEffectData).phonemeb = value)).row();
-            table.add(createSlider("phonemeaCoarseTuning", -24, 24, 0, (value) -> ((VocalMorpherData) boomEffectData).phonemeaCoarseTuning = value)).row();
-            table.add(createSlider("phonemebCoarseTuning", -24, 24, 0, (value) -> ((VocalMorpherData) boomEffectData).phonemebCoarseTuning = value)).row();
-            table.add(createSlider("waveform", 0, 2, 0, (value) -> ((VocalMorpherData) boomEffectData).waveform = value)).row();
-            table.add(createSlider("rate", 0, 10, 1.41f, 2, (value) -> ((VocalMorpherData) boomEffectData).rate = value)).row();
+            VocalMorpherData thisData = (VocalMorpherData) boomEffectData;
+            table.add(createSlider("phonemea", 0, 29, thisData.phonemea, (value) -> thisData.phonemea = value)).row();
+            table.add(createSlider("phonemeb", 0, 29, thisData.phonemeb, (value) -> thisData.phonemeb = value)).row();
+            table.add(createSlider("phonemeaCoarseTuning", -24, 24, thisData.phonemeaCoarseTuning, (value) -> thisData.phonemeaCoarseTuning = value)).row();
+            table.add(createSlider("phonemebCoarseTuning", -24, 24, thisData.phonemebCoarseTuning, (value) -> thisData.phonemebCoarseTuning = value)).row();
+            table.add(createSlider("waveform", 0, 2, thisData.waveform, (value) -> thisData.waveform = value)).row();
+            table.add(createSlider("rate", 0, 10, thisData.rate, 2, (value) -> thisData.rate = value)).row();
         }
 
         return table;
@@ -328,6 +393,11 @@ public class EffectExplorer extends ApplicationAdapter {
 
                 // Update effect
                 boomEffect.apply();
+
+                // Reset preset
+                currentPreset = null;
+                currentPresetIndex = -1;
+                presetLabel.setText("Custom");
             }
         });
 
@@ -369,6 +439,11 @@ public class EffectExplorer extends ApplicationAdapter {
 
                 // Update effect
                 boomEffect.apply();
+
+                // Reset preset
+                currentPreset = null;
+                currentPresetIndex = -1;
+                presetLabel.setText("Custom");
             }
         });
 
@@ -403,9 +478,12 @@ public class EffectExplorer extends ApplicationAdapter {
 
     private void setEffect(EffectType effectType) {
         currentEffect = effectType;
+        currentPreset = null;
+        currentPresetIndex = -1;
 
         // Effect label
         effectLabel.setText(effectType.toString());
+        presetLabel.setText("Default");
 
         // Create effect data
         BoomEffectData effectData;
@@ -441,6 +519,65 @@ public class EffectExplorer extends ApplicationAdapter {
         // Create effect table
         Table table = createEffectTable(effectType);
         container.setActor(table);
+    }
+
+    private void onPresetButton(boolean next) {
+        // Get preset values
+        BoomEffectPreset[] presetValues;
+        if(currentEffect == EffectType.AUTO_WAH) {
+            presetValues = null;
+        } else if(currentEffect == EffectType.CHORUS) {
+            presetValues = ChorusPreset.values();
+        } else if(currentEffect == EffectType.COMPRESSOR) {
+            presetValues = null;
+        } else if(currentEffect == EffectType.DISTORTION) {
+            presetValues = DistortionPreset.values();
+        } else if(currentEffect == EffectType.ECHO) {
+            presetValues = EchoPreset.values();
+        } else if(currentEffect == EffectType.FLANGER) {
+            presetValues = FlangerPreset.values();
+        } else if(currentEffect == EffectType.PITCH_SHIFTER) {
+            presetValues = PitchShifterPreset.values();
+        } else if(currentEffect == EffectType.REVERB) {
+            presetValues = ReverbPreset.values();
+        } else if(currentEffect == EffectType.RING_MODULATOR) {
+            presetValues = RingModulatorPreset.values();
+        } else if(currentEffect == EffectType.VOCAL_MORPHER) {
+            presetValues = null;
+        } else {
+            presetValues = null;
+        }
+
+        // If we have no presets, do nothing
+        if(presetValues == null) {
+            return;
+        }
+
+        // Advance index
+        int limit = presetValues.length;
+        currentPresetIndex += next ? 1 : -1;
+
+        // Wrap index around the array boundaries
+        if(currentPresetIndex < 0) {
+            currentPresetIndex += limit;
+        } else if(currentPresetIndex >= limit) {
+            currentPresetIndex -= limit;
+        }
+
+        // Set new value
+        currentPreset = presetValues[currentPresetIndex];
+
+        // Add effect to boom
+        boomChannel.removeAllEffects();
+        boomEffect = boomChannel.addEffect(currentPreset.getData());
+        boomEffectData = currentPreset.getData();
+
+        // Create effect table
+        Table table = createEffectTable(currentEffect);
+        container.setActor(table);
+
+        // Update UI
+        presetLabel.setText(currentPreset + "");
     }
 
     private void update(float delta) {
