@@ -9,6 +9,13 @@ run {
     ignoreExitValue = true
 }
 
+task runEffectExplorer(type: JavaExec) {
+    main = 'com.rafaskoberg.gdx.boom.example.effect_explorer.EffectExplorer'
+    workingDir = project.file('assets').path
+    classpath = sourceSets.main.runtimeClasspath
+    group = "application"
+}
+
 task dist(type: Jar, dependsOn: 'classes') {
     archiveFileName = "${project.ext.projectName}-example-${project.ext.projectVersion}.jar"
 
