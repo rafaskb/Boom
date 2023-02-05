@@ -13,8 +13,9 @@ public enum DistortionPreset implements BoomEffectPreset {
     // ===========================
     // ===   Default Presets   ===
     // ===========================
-    GENERIC(new DistortionData(0.5f, 0.5f, 8000f, 3600f, 3600f)),
-    SOFT(new DistortionData(0.1f, 0.5f, 8000f, 3600f, 3600f)),
+    SOFT(new DistortionData(0.1f, 1.0f, 8000f, 3600f, 3600f)),
+    GENERIC(new DistortionData(0.5f, 1.0f, 8000f, 3600f, 3600f)),
+    RUMBLE(new DistortionData(0.7f, 1.0f, 8000f, 3600f, 3600f)),
     CRUSHER(new DistortionData(1.0f, 1.0f, 8000f, 3600f, 3600f)),
     ;
 
