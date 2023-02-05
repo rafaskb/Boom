@@ -16,6 +16,7 @@ Watch the video to listen to its features:
     - [Effects](#effects)
     - [Channels](#channels)
     - [Filters](#filters)
+- [Limitations](#limitations)
 - [Example App](#example-app)
 - [Install](#install)
 - [Usage](#usage)
@@ -70,6 +71,15 @@ BoomEffect reverbEffect=myBoomChannel.addEffect(ReverbPreset.AUDITORIUM);
 reverbEffect.getFilter().setGain(0.5f);
 reverbEffect.getFilter().setHighPass(0.15f);
 ```
+
+## Limitations
+
+- Only works with the LWJGL3 backend (desktop).
+  - Other backends such as mobile and web are not supported nor planned.
+- You must **only** use Boom to play audio.
+  - Boom works by applying effects and filters directly to OpenAL, but libGDX doesn't know that. When Sounds and Music are played directly through `Sound.play()` and `Music.play()`, whatever Boom effect is currently active will bleed to them.
+  - Just play your audio through the `Boom` class and you'll be fine!
+- Boom channels can't have more than 2 effects applied at once. This is an OpenAL limitation.
 
 ## Example App
 
