@@ -79,7 +79,7 @@ reverbEffect.getFilter().setHighPass(0.15f);
 - You must **only** use Boom to play audio.
   - Boom works by applying effects and filters directly to OpenAL, but libGDX doesn't know that. When Sounds and Music are played directly through `Sound.play()` and `Music.play()`, whatever Boom effect is currently active will bleed to them.
   - Just play your audio through the `Boom` class and you'll be fine!
-- Boom channels can't have more than 2 effects applied at once. This is an OpenAL limitation.
+- Boom channels can't have more than 2 effects applied at once. This is a libGDX limitation.
 
 ## Example App
 
@@ -88,6 +88,8 @@ You can run the example app to see how the library works. It's also a great way 
 1. Clone this repository.
 2. Open terminal at the project's root folder.
 3. Run `gradlew example:run` _(If that doesn't work, try `./gradlew` instead)_
+
+**Extra:** You can also run `gradlew example:runEffectExplorer` to open an experimental app which allows you to explore most Boom effects and test their presets and parameters in real time.
 
 ## Install
 
