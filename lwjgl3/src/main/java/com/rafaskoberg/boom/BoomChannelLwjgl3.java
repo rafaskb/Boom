@@ -113,7 +113,7 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         }
 
         // Check for errors
-        BoomError.check("Rrror while removing effect");
+        BoomError.check("Error while removing effect");
     }
 
     @Override
