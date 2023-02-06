@@ -22,9 +22,4 @@ public class CompressorEffectLwjgl3 extends BoomEffectLwjgl3 {
         alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, alEffect);
     }
 
-    @Override
-    public void remove() {
-        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, AL_EFFECT_NULL);
-    }
-
 }

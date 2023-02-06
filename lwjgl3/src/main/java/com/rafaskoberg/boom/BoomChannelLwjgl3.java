@@ -108,7 +108,6 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     public void removeEffect(BoomEffect effect) {
         BoomEffectLwjgl3 effectLwjgl3 = (BoomEffectLwjgl3) effect;
         if(effects.removeValue(effectLwjgl3, true)) {
-            effectLwjgl3.remove();
             effectLwjgl3.dispose();
         }
 
@@ -126,7 +125,6 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     @Override
     public void removeAllEffects() {
         for(BoomEffectLwjgl3 effect : effects) {
-            effect.remove();
             effect.dispose();
         }
         effects.clear();

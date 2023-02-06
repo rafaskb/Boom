@@ -8,8 +8,6 @@ public abstract class BoomEffect {
 
     public abstract void apply();
 
-    public abstract void remove();
-
     /**
      * Returns the filter for this channel.
      */

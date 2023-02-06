@@ -29,6 +29,7 @@ public abstract class BoomEffectLwjgl3 extends BoomEffect implements Disposable 
     @Override
     public void dispose() {
         // Dispose
+        alAuxiliaryEffectSloti(alAuxSlot, AL_EFFECTSLOT_EFFECT, AL_EFFECT_NULL);
         alDeleteAuxiliaryEffectSlots(alAuxSlot);
         alDeleteEffects(alEffect);
         ((BoomFilterLwjgl3) filter).dispose();
