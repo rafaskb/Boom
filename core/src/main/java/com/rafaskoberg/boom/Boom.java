@@ -284,4 +284,11 @@ public abstract class Boom {
      * @param channel Channel this sound should be updated against.
      */
     public abstract void updateSoundToChannel(long soundId, BoomChannel channel);
+
+    /**
+     * Returns the maximum amount of effects allowed per channel. While libGDX provides only 2 effect slots, Boom attempts to use up to 16,
+     * however this value is hardware dependent. Always check the maximum amount of effects you can have per channel before adding new
+     * effects.
+     */
+    public abstract int getMaxEffectsPerChannel();
 }

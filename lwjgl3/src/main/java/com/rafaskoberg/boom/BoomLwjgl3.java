@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl3.audio.OpenALLwjgl3Audio;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
 import com.badlogic.gdx.utils.ObjectIntMap;
@@ -21,27 +22,48 @@ import com.rafaskoberg.boom.filter.BoomFilterLwjgl3;
 import com.rafaskoberg.boom.util.BoomError;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
+import org.lwjgl.openal.ALC10;
+import org.lwjgl.openal.EXTEfx;
+import org.lwjgl.openal.SOFTHRTF;
+
+import java.nio.IntBuffer;
 
 import static org.lwjgl.openal.EXTEfx.*;
 
 public class BoomLwjgl3 extends Boom {
+    private static BoomLwjgl3 instance;
     private static Field f_soundIdToSource;
+    private static Field f_device;
 
     static {
         try {
             f_soundIdToSource = ClassReflection.getDeclaredField(OpenALLwjgl3Audio.class, "soundIdToSource");
             f_soundIdToSource.setAccessible(true);
+            f_device = ClassReflection.getDeclaredField(OpenALLwjgl3Audio.class, "device");
+            f_device.setAccessible(true);
         } catch(ReflectionException e) {
             e.printStackTrace();
         }
     }
 
-    private IntMap<BoomChannel> channelsById;
-    private ObjectIntMap<Music> musicChannels;
+    static BoomLwjgl3 getInstance() {
+        return instance;
+    }
+
+    private final IntMap<BoomChannel> channelsById;
+    private final ObjectIntMap<Music> musicChannels;
+    final int maxAuxiliarySends;
 
     public BoomLwjgl3() {
+        // Singleton
+        instance = this;
+
+        // Instantiate members
         channelsById = new IntMap<>();
         musicChannels = new ObjectIntMap<>();
+
+        // Fetch max aux sends
+        maxAuxiliarySends = fetchMaxAuxiliarySends();
 
         // Register application listener
         Timer.schedule(new Task() {
@@ -50,6 +72,32 @@ public class BoomLwjgl3 extends Boom {
                 update();
             }
         }, 0, 1 / 60f, -1);
+    }
+
+    private static int fetchMaxAuxiliarySends() {
+        final int desiredAmount = 16;
+        final int fallbackAmount = 2;
+
+        // Get device handle
+        long deviceHandle = getDeviceHandle(); // Will be 0 in case of errors
+
+        // Prepare context attributes
+        final IntBuffer contextAttributes = BufferUtils.newIntBuffer(10);
+        contextAttributes.put(ALC_MAX_AUXILIARY_SENDS);
+        contextAttributes.put(desiredAmount); // Maximum depends on the hardware
+        contextAttributes.put(0); // No one knows what this zero is for, yet no one is brave enough to take it away
+        contextAttributes.flip();
+
+        // Reset the audio device with the new attributes
+        if(!SOFTHRTF.alcResetDeviceSOFT(deviceHandle, contextAttributes)) {
+            Gdx.app.error("Boom", String.format("Couldn't reset device with new effect slot limit attributes. deviceHandle: %d, error: %d", deviceHandle, ALC10.alcGetError(deviceHandle)));
+            return fallbackAmount;
+        }
+
+        // Check how many effect slots we got
+        final IntBuffer auxSends = BufferUtils.newIntBuffer(1);
+        ALC10.alcGetIntegerv(deviceHandle, EXTEfx.ALC_MAX_AUXILIARY_SENDS, auxSends);
+        return auxSends.get(0);
     }
 
     private void update() {
@@ -203,4 +251,17 @@ public class BoomLwjgl3 extends Boom {
         return -1;
     }
 
+    private static long getDeviceHandle() {
+        try {
+            return (long) f_device.get(Gdx.audio);
+        } catch(ReflectionException e) {
+            Gdx.app.error("Boom", "Error while getting the device handle via reflection.", e);
+        }
+        return -1;
+    }
+
+    @Override
+    public int getMaxEffectsPerChannel() {
+        return maxAuxiliarySends;
+    }
 }
