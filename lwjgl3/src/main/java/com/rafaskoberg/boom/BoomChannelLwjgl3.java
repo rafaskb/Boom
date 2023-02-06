@@ -133,6 +133,7 @@ public class BoomChannelLwjgl3 extends BoomChannel {
         BoomError.check("Error while removing effects");
     }
 
+    @Override
     public Array<BoomEffectLwjgl3> getEffects() {
         return effects;
     }

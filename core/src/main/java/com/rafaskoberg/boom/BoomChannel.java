@@ -1,5 +1,6 @@
 package com.rafaskoberg.boom;
 
+import com.badlogic.gdx.utils.Array;
 import com.rafaskoberg.boom.effect.BoomEffect;
 import com.rafaskoberg.boom.effect.BoomEffectData;
 import com.rafaskoberg.boom.effect.BoomEffectPreset;
@@ -49,6 +50,11 @@ public abstract class BoomChannel {
      * Removes all effects from this channel.
      */
     public abstract void removeAllEffects();
+
+    /**
+     * Returns a list of all effects currently applied to this channel. This list should not be modified.
+     */
+    public abstract Array<? extends BoomEffect> getEffects();
 
     /**
      * Returns the filter for this channel.
