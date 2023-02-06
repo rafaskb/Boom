@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALLwjgl3Audio;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
@@ -208,8 +207,8 @@ public class BoomLwjgl3 extends Boom {
             // If channel is null, reset audio source
             if(channel == null) {
                 AL10.alSourcei(sourceId, AL_DIRECT_FILTER, AL_FILTER_NULL);
-                for(int i = 0; i < maxAuxiliarySends; i++) {
-                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, i, AL_FILTER_NULL);
+                for(int auxSendId = 0; auxSendId < maxAuxiliarySends; auxSendId++) {
+                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, auxSendId, AL_FILTER_NULL);
                 }
 
                 // Check for errors
@@ -221,13 +220,12 @@ public class BoomLwjgl3 extends Boom {
             // Apply channel effects
             if(channel != null) {
                 channel.apply(sourceId);
-                Array<BoomEffectLwjgl3> effects = channel.getEffects();
-                for(int i = 0; i < maxAuxiliarySends; i++) {
-                    BoomEffectLwjgl3 effect = i < effects.size ? effects.get(i) : null;
+                for(int auxSendId = 0; auxSendId < maxAuxiliarySends; auxSendId++) {
+                    BoomEffectLwjgl3 effect = channel.effectsBySlot.get(auxSendId, null);
                     BoomFilterLwjgl3 filter = effect != null ? (BoomFilterLwjgl3) effect.getFilter() : null;
                     int alAuxSlot = effect != null ? effect.alAuxSlot : AL_EFFECTSLOT_NULL;
                     int alFilter = filter != null ? filter.getAlFilter() : AL_FILTER_NULL;
-                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, alAuxSlot, i, alFilter);
+                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, alAuxSlot, auxSendId, alFilter);
                 }
 
                 // Check for errors

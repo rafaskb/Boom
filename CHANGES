@@ -1,5 +1,6 @@
 [1.1.0] (Unreleased)
 - BREAKING: Removed BoomEffect.remove method. Effects must be removed through their channels, which has always been the intended behavior.
+- BREAKING: Removed BoomChannel.removeEffect(int) in favor of passing the BoomEffect object itself instead.
 - Channels can have more than 2 effects each. Check Boom.getMaxEffectsPerChannel() to know the actual limit for the current device.
 - Added BoomChannel.getEffects method.
 

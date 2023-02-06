@@ -11,6 +11,7 @@ public abstract class BoomEffectLwjgl3 extends BoomEffect implements Disposable 
 
     public final int alAuxSlot;
     public final int alEffect;
+    int auxSendId = -1;
 
     public BoomEffectLwjgl3() {
         // Create aux slot

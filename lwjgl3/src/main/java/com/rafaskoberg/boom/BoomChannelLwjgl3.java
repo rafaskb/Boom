@@ -2,6 +2,8 @@ package com.rafaskoberg.boom;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.utils.IntMap.Values;
 import com.rafaskoberg.boom.effect.AutoWahData;
 import com.rafaskoberg.boom.effect.AutoWahEffectLwjgl3;
 import com.rafaskoberg.boom.effect.BoomEffect;
@@ -29,16 +31,19 @@ import com.rafaskoberg.boom.filter.BoomFilterLwjgl3;
 import com.rafaskoberg.boom.util.BoomError;
 import org.lwjgl.openal.AL10;
 
-import static org.lwjgl.openal.EXTEfx.*;
+import static org.lwjgl.openal.EXTEfx.AL_DIRECT_FILTER;
 
 public class BoomChannelLwjgl3 extends BoomChannel {
-    private final Array<BoomEffectLwjgl3> effects;
-
+    final IntMap<BoomEffectLwjgl3> effectsBySlot;
+    private final Array<BoomEffectLwjgl3> tmpEffects;
     private final int alFilter;
+    private final int maxEffectsPerChannel;
 
     BoomChannelLwjgl3(int id) {
         super(id);
-        this.effects = new Array<>();
+        this.effectsBySlot = new IntMap<>();
+        this.tmpEffects = new Array<>();
+        this.maxEffectsPerChannel = BoomLwjgl3.getInstance().getMaxEffectsPerChannel();
 
         // Check for errors
         BoomError.check("Error while creating a BoomChannel of ID " + id);
@@ -51,8 +56,7 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     @Override
     public BoomEffect addEffect(BoomEffectData effectData) {
         // Ensure capacity
-        final int maxEffectsPerChannel = BoomLwjgl3.getInstance().getMaxEffectsPerChannel();
-        if(effects.size >= maxEffectsPerChannel) {
+        if(effectsBySlot.size >= maxEffectsPerChannel) {
             Gdx.app.error("Boom", String.format(
                 "Tried to add an effect to Channel ID %d, but it already hit the limit (%d).",
                 getId(), maxEffectsPerChannel
@@ -93,11 +97,19 @@ public class BoomChannelLwjgl3 extends BoomChannel {
             return null;
         }
 
+        // Ensure effect slot is valid
+        int effectSlot = findNextEffectSlot();
+        if(effectSlot == -1) {
+            Gdx.app.error("Boom", "Effect slot is invalid. Channel has " + effectsBySlot.size + " effects.");
+            return null;
+        }
+
+        // Assign channel slot
+        effect.auxSendId = effectSlot;
+        effectsBySlot.put(effectSlot, effect);
+
         // Apply effect
         effect.apply();
-
-        // Cache
-        effects.add(effect);
 
         // Check for errors
         if(BoomError.check("Error while applying effect " + effectType)) {
@@ -109,10 +121,13 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     }
 
     @Override
-    public void removeEffect(BoomEffect effect) {
-        BoomEffectLwjgl3 effectLwjgl3 = (BoomEffectLwjgl3) effect;
-        if(effects.removeValue(effectLwjgl3, true)) {
-            effectLwjgl3.dispose();
+    public void removeEffect(BoomEffect _effect) {
+        // Remove effect
+        BoomEffectLwjgl3 effect = (BoomEffectLwjgl3) _effect;
+        int effectSlot = effect.auxSendId;
+        boolean removed = effectsBySlot.remove(effectSlot) != null;
+        if(removed) {
+            effect.dispose();
         }
 
         // Check for errors
@@ -120,18 +135,17 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     }
 
     @Override
-    public void removeEffect(int effectIndex) {
-        if(effectIndex >= 0 && effectIndex < effects.size) {
-            removeEffect(effects.get(effectIndex));
-        }
-    }
-
-    @Override
     public void removeAllEffects() {
-        for(BoomEffectLwjgl3 effect : effects) {
-            effect.dispose();
+        // Remove effects
+        for(int slot = 0; slot < maxEffectsPerChannel; slot++) {
+            BoomEffectLwjgl3 effect = effectsBySlot.get(slot, null);
+            if(effect != null) {
+                int effectSlot = effect.auxSendId;
+                effectsBySlot.remove(effectSlot);
+                effect.dispose();
+            }
         }
-        effects.clear();
+        effectsBySlot.clear();
 
         // Check for errors
         BoomError.check("Error while removing effects");
@@ -139,12 +153,25 @@ public class BoomChannelLwjgl3 extends BoomChannel {
 
     @Override
     public Array<BoomEffectLwjgl3> getEffects() {
-        return effects;
+        tmpEffects.clear();
+        Values<BoomEffectLwjgl3> values = effectsBySlot.values();
+        while(values.hasNext)
+            tmpEffects.add(values.next());
+        return tmpEffects;
     }
 
     @Override
     protected void apply(int sourceId) {
         AL10.alSourcei(sourceId, AL_DIRECT_FILTER, alFilter);
+    }
+
+    private int findNextEffectSlot() {
+        for(int slot = 0; slot < maxEffectsPerChannel; slot++) {
+            if(!effectsBySlot.containsKey(slot)) {
+                return slot;
+            }
+        }
+        return -1;
     }
 
 }

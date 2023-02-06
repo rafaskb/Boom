@@ -42,17 +42,12 @@ public abstract class BoomChannel {
     public abstract void removeEffect(BoomEffect effect);
 
     /**
-     * Removes a certain effect from this channel.
-     */
-    public abstract void removeEffect(int effectIndex);
-
-    /**
      * Removes all effects from this channel.
      */
     public abstract void removeAllEffects();
 
     /**
-     * Returns a list of all effects currently applied to this channel. This list should not be modified.
+     * Returns a temporary list of all effects currently applied to this channel. Changes to this list have no effect.
      */
     public abstract Array<? extends BoomEffect> getEffects();
 
