@@ -51,8 +51,12 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     @Override
     public BoomEffect addEffect(BoomEffectData effectData) {
         // Ensure capacity
-        if(effects.size == 2) {
-            Gdx.app.error("Boom", "The maximum amount of effects per channel is 2, and this channel (ID " + getId() + ") is already full.");
+        final int maxEffectsPerChannel = BoomLwjgl3.getInstance().getMaxEffectsPerChannel();
+        if(effects.size >= maxEffectsPerChannel) {
+            Gdx.app.error("Boom", String.format(
+                "Tried to add an effect to Channel ID %d, but it already hit the limit (%d).",
+                getId(), maxEffectsPerChannel
+            ));
             return null;
         }
 

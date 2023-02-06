@@ -208,8 +208,9 @@ public class BoomLwjgl3 extends Boom {
             // If channel is null, reset audio source
             if(channel == null) {
                 AL10.alSourcei(sourceId, AL_DIRECT_FILTER, AL_FILTER_NULL);
-                AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 0, AL_FILTER_NULL);
-                AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, 1, AL_FILTER_NULL);
+                for(int i = 0; i < maxAuxiliarySends; i++) {
+                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, i, AL_FILTER_NULL);
+                }
 
                 // Check for errors
                 if(BoomError.check("Error while resetting an audio source with no channel")) {
@@ -221,7 +222,7 @@ public class BoomLwjgl3 extends Boom {
             if(channel != null) {
                 channel.apply(sourceId);
                 Array<BoomEffectLwjgl3> effects = channel.getEffects();
-                for(int i = 0; i < 2; i++) {
+                for(int i = 0; i < maxAuxiliarySends; i++) {
                     BoomEffectLwjgl3 effect = i < effects.size ? effects.get(i) : null;
                     BoomFilterLwjgl3 filter = effect != null ? (BoomFilterLwjgl3) effect.getFilter() : null;
                     int alAuxSlot = effect != null ? effect.alAuxSlot : AL_EFFECTSLOT_NULL;

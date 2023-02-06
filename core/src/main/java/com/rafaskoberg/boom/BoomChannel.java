@@ -32,7 +32,7 @@ public abstract class BoomChannel {
     }
 
     /**
-     * Adds a new effect to this channel. The maximum amount of effects per channel is 2.
+     * Adds a new effect to this channel.
      */
     public abstract BoomEffect addEffect(BoomEffectData effect);
 
