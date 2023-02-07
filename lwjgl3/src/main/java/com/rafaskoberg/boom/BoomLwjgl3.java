@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl3.audio.OpenALLwjgl3Audio;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.IntIntMap;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
 import com.badlogic.gdx.utils.ObjectIntMap;
@@ -22,7 +23,6 @@ import com.rafaskoberg.boom.util.BoomError;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 import org.lwjgl.openal.ALC10;
-import org.lwjgl.openal.EXTEfx;
 import org.lwjgl.openal.SOFTHRTF;
 
 import java.nio.IntBuffer;
@@ -51,6 +51,7 @@ public class BoomLwjgl3 extends Boom {
 
     private final IntMap<BoomChannel> channelsById;
     private final ObjectIntMap<Music> musicChannels;
+    final IntIntMap sourceIdsToChannelIds;
     final int maxAuxiliarySends;
 
     public BoomLwjgl3() {
@@ -60,6 +61,7 @@ public class BoomLwjgl3 extends Boom {
         // Instantiate members
         channelsById = new IntMap<>();
         musicChannels = new ObjectIntMap<>();
+        sourceIdsToChannelIds = new IntIntMap();
 
         // Fetch max aux sends
         maxAuxiliarySends = fetchMaxAuxiliarySends();
@@ -95,7 +97,7 @@ public class BoomLwjgl3 extends Boom {
 
         // Check how many effect slots we got
         final IntBuffer auxSends = BufferUtils.newIntBuffer(1);
-        ALC10.alcGetIntegerv(deviceHandle, EXTEfx.ALC_MAX_AUXILIARY_SENDS, auxSends);
+        ALC10.alcGetIntegerv(deviceHandle, ALC_MAX_AUXILIARY_SENDS, auxSends);
         return auxSends.get(0);
     }
 
@@ -202,38 +204,39 @@ public class BoomLwjgl3 extends Boom {
     }
 
     private boolean applyChannelToSourceId(int sourceId, BoomChannelLwjgl3 channel) {
-        if(sourceId != -1) {
+        if(sourceId == -1) return false;
 
-            // If channel is null, reset audio source
-            if(channel == null) {
-                AL10.alSourcei(sourceId, AL_DIRECT_FILTER, AL_FILTER_NULL);
-                for(int auxSendId = 0; auxSendId < maxAuxiliarySends; auxSendId++) {
-                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, auxSendId, AL_FILTER_NULL);
-                }
-
-                // Check for errors
-                if(BoomError.check("Error while resetting an audio source with no channel")) {
-                    return false;
-                }
+        // If channel is null, reset audio source
+        if(channel == null) {
+            AL10.alSourcei(sourceId, AL_DIRECT_FILTER, AL_FILTER_NULL);
+            for(int auxSendId = 0; auxSendId < maxAuxiliarySends; auxSendId++) {
+                AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, auxSendId, AL_FILTER_NULL);
             }
 
-            // Apply channel effects
-            if(channel != null) {
-                channel.apply(sourceId);
-                for(int auxSendId = 0; auxSendId < maxAuxiliarySends; auxSendId++) {
-                    BoomEffectLwjgl3 effect = channel.effectsBySlot.get(auxSendId, null);
-                    BoomFilterLwjgl3 filter = effect != null ? (BoomFilterLwjgl3) effect.getFilter() : null;
-                    int alAuxSlot = effect != null ? effect.alAuxSlot : AL_EFFECTSLOT_NULL;
-                    int alFilter = filter != null ? filter.getAlFilter() : AL_FILTER_NULL;
-                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, alAuxSlot, auxSendId, alFilter);
-                }
-
-                // Check for errors
-                if(BoomError.check("Error while applying channel effects to an an audio source")) {
-                    return false;
-                }
+            // Check for errors
+            if(BoomError.check("Error while resetting an audio source with no channel")) {
+                return false;
             }
         }
+
+        // Apply channel effects
+        if(channel != null) {
+            channel.apply(sourceId);
+            for(int auxSendId = 0; auxSendId < maxAuxiliarySends; auxSendId++) {
+                BoomEffectLwjgl3 effect = channel.effectsBySlot.get(auxSendId, null);
+                BoomFilterLwjgl3 filter = effect != null ? (BoomFilterLwjgl3) effect.getFilter() : null;
+                int alAuxSlot = effect != null ? effect.alAuxSlot : AL_EFFECTSLOT_NULL;
+                int alFilter = filter != null ? filter.getAlFilter() : AL_FILTER_NULL;
+                AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, alAuxSlot, auxSendId, alFilter);
+            }
+
+            // Check for errors
+            if(BoomError.check("Error while applying channel effects to an an audio source")) {
+                return false;
+            }
+        }
+
+        // All good!
         return true;
     }
 

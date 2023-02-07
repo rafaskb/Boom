@@ -106,6 +106,7 @@ public class BoomChannelLwjgl3 extends BoomChannel {
 
         // Assign channel slot
         effect.auxSendId = effectSlot;
+        effect.channelId = getId();
         effectsBySlot.put(effectSlot, effect);
 
         // Apply effect
@@ -162,7 +163,11 @@ public class BoomChannelLwjgl3 extends BoomChannel {
 
     @Override
     protected void apply(int sourceId) {
+        // Apply
         AL10.alSourcei(sourceId, AL_DIRECT_FILTER, alFilter);
+
+        // Register Source ID
+        BoomLwjgl3.getInstance().sourceIdsToChannelIds.put(sourceId, getId());
     }
 
     private int findNextEffectSlot() {
