@@ -119,6 +119,22 @@ public class BoomLwjgl3 extends Boom {
             int id = entry.value;
             applyChannelToSourceId(sourceId, (BoomChannelLwjgl3) getChannel(id));
         }
+
+        // Clean up stopped sources
+        IntIntMap.Entries iterator = sourceIdsToChannelIds.entries();
+        while(iterator.hasNext) {
+            IntIntMap.Entry entry = iterator.next();
+            int sourceId = entry.key;
+            int channelId = entry.value;
+            int state = AL10.alGetSourcei(sourceId, AL10.AL_SOURCE_STATE);
+            if(state == AL10.AL_STOPPED) {
+                BoomChannelLwjgl3 channel = (BoomChannelLwjgl3) channelsById.get(channelId, null);
+                for(BoomEffectLwjgl3 effect : channel.getEffects()) {
+                    AL11.alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, AL_EFFECTSLOT_NULL, effect.auxSendId, AL_FILTER_NULL);
+                }
+                iterator.remove();
+            }
+        }
     }
 
     @Override
