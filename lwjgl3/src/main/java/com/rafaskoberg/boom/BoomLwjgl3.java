@@ -77,7 +77,6 @@ public class BoomLwjgl3 extends Boom {
 
     private static int fetchMaxAuxiliarySends() {
         final int desiredAmount = 16;
-        final int fallbackAmount = 2;
 
         // Get device handle
         long deviceHandle = getDeviceHandle(); // Will be 0 in case of errors
@@ -92,7 +91,6 @@ public class BoomLwjgl3 extends Boom {
         // Reset the audio device with the new attributes
         if(!SOFTHRTF.alcResetDeviceSOFT(deviceHandle, contextAttributes)) {
             Gdx.app.error("Boom", String.format("Couldn't reset device with new effect slot limit attributes. deviceHandle: %d, error: %d", deviceHandle, ALC10.alcGetError(deviceHandle)));
-            return fallbackAmount;
         }
 
         // Check how many effect slots we got
