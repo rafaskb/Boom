@@ -162,6 +162,11 @@ public class BoomChannelLwjgl3 extends BoomChannel {
     }
 
     @Override
+    public boolean isFull() {
+        return effectsBySlot.size >= maxEffectsPerChannel;
+    }
+
+    @Override
     protected void apply(int sourceId) {
         // Apply
         AL10.alSourcei(sourceId, AL_DIRECT_FILTER, alFilter);

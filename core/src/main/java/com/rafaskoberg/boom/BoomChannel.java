@@ -52,6 +52,12 @@ public abstract class BoomChannel {
     public abstract Array<? extends BoomEffect> getEffects();
 
     /**
+     * Returns whether all effect slots for this channel are already occupied. Always check if the channel is full before adding new
+     * effects.
+     */
+    public abstract boolean isFull();
+
+    /**
      * Returns the filter for this channel.
      */
     public BoomFilter getFilter() {
